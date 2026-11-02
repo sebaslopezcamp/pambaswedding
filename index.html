@@ -117,14 +117,29 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 @media (max-width:760px){.site-header nav{display:none}.site-header .btn{margin-left:auto}}
 
 /* ================= PORTADA ================= */
-.hero{padding-block:28px 64px;text-align:center}
-.hero-photo{max-width:980px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.photo-frame{position:relative;aspect-ratio:3/2;max-width:100%;border-radius:22px;overflow:hidden;background:linear-gradient(150deg,var(--blush),var(--peach) 60%,var(--coral));}
+.hero{padding-block:0 64px;text-align:center}
+.hero-photo{margin:0}
+.photo-frame{position:relative;aspect-ratio:3/2;max-width:100%;max-height:92vh;width:100%;border-radius:0;overflow:hidden;background:linear-gradient(150deg,var(--blush),var(--peach) 60%,var(--coral));}
 .photo-frame img{width:100%;height:100%;object-fit:cover;object-position:53% 70%}
 .photo-frame .ph{position:absolute;inset:0;display:grid;place-items:center;align-content:center;gap:10px;color:var(--card);font-family:var(--f-display);font-style:italic;font-size:19px}
 .photo-frame .ph img{width:110px;height:auto;opacity:.95}
-@media (max-width:640px){.photo-frame{aspect-ratio:4/5;border-radius:16px}}
-.hero .kicker{margin-top:44px}
+@media (max-width:640px){.photo-frame{aspect-ratio:3/4;max-height:86vh}}
+.hero .date-line{margin-top:44px}
+.photo-frame::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,rgba(15,18,8,.55) 0%,rgba(15,18,8,.25) 38%,transparent 60%)}
+.hero-title{position:absolute;z-index:1;left:6%;top:42%;transform:translateY(-50%);text-align:left;color:#FBF8F1;text-shadow:0 2px 18px rgba(0,0,0,.45)}
+.hero-names{font-family:var(--f-script);font-weight:400;margin:0;line-height:.95;font-size:clamp(50px,6.6vw,86px)}
+.hero-names span{display:block}
+.hero-names .amp{font-size:.5em;margin:.05em 0 .05em 1.6em}
+.hero-names span:last-child{padding-left:.55em}
+.hero-sub{font-family:var(--f-display);font-weight:600;letter-spacing:.38em;text-transform:uppercase;font-size:clamp(12px,1.3vw,15px);margin:18px 0 0 3.2em}
+@media (max-width:640px){
+  .photo-frame::after{background:linear-gradient(180deg,rgba(15,18,8,.62) 0%,rgba(15,18,8,.32) 34%,transparent 55%)}
+  .hero-title{left:0;right:0;top:7%;transform:none;text-align:center}
+  .hero-names{font-size:clamp(54px,16vw,76px)}
+  .hero-names .amp{margin:0}
+  .hero-names span:last-child{padding-left:0}
+  .hero-sub{margin:12px 0 0;letter-spacing:.32em}
+}
 .names{font-family:var(--f-script);color:var(--brick);font-weight:400;line-height:1;margin:14px 0 0;font-size:clamp(54px,11vw,92px)}
 .names span{display:block}
 .names .amp{font-size:.55em;color:var(--wine);margin:.1em 0 .06em}
@@ -171,7 +186,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .gallery{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 .gallery::-webkit-scrollbar{display:none}
 .gallery figure{margin:0;flex:0 0 100%;width:100%;height:min(74vh,640px);scroll-snap-align:start;scroll-snap-stop:always;position:relative}
-@media (max-width:640px){.gallery figure{height:auto;aspect-ratio:4/5}}
+@media (max-width:640px){.gallery-wrap{padding-left:max(8px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px))}.gallery{border-radius:12px}.gallery figure{height:auto;aspect-ratio:3/4;max-height:78vh}}
 .gallery button,.gallery .ph{display:block;width:100%;height:100%;padding:0;border:0;background:none;cursor:zoom-in;overflow:hidden}
 .gallery .ph{display:grid;place-items:center;color:var(--card);font-family:var(--f-display);font-style:italic;font-size:20px;cursor:default}
 .gallery figure{overflow:hidden;background:var(--olive-deep)}
@@ -317,12 +332,13 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
   <img class="deco hide-sm" src="assets/berry_r.png" alt="" style="top:74%;right:calc(50% - 450px);width:120px">
   <div class="hero-photo">
     <div class="photo-frame">
-      <img src="fotos/principal-sm.jpg" srcset="fotos/principal-sm.jpg 1280w, fotos/principal.jpg 2560w" sizes="(max-width: 1000px) 100vw, 980px" alt="Pamela y Sebastián abrazados en un camino entre árboles" fetchpriority="high">
+      <img src="fotos/principal-sm.jpg" srcset="fotos/principal-sm.jpg 1280w, fotos/principal.jpg 2560w" sizes="100vw" alt="Pamela y Sebastián abrazados en un camino entre árboles" fetchpriority="high">
+      <div class="hero-title">
+        <h1 class="hero-names"><span>Pamela</span><span class="amp">&amp;</span><span>Sebastián</span></h1>
+      </div>
     </div>
   </div>
   <div class="wrap">
-    <p class="eyebrow kicker">Nos casamos</p>
-    <h1 class="names"><span>Pamela Salas</span><span class="amp">&amp;</span><span>Sebastián López</span></h1>
     <div class="date-line" aria-label="Sábado 19 de junio de 2027">
       <div class="side">Sábado</div>
       <div><div class="day">19</div><span class="year">2027</span></div>
