@@ -748,11 +748,13 @@ async function load(c){
   try{
     const r = await api("get", { code });
     if (!r.ok) throw 0;
-    guest = r.guest; renderGuest();
+    guest = r.guest;
   }catch(e){
     show("vSearch"); $("searchMsg").hidden = false;
     $("searchMsg").textContent = "No encontramos la invitación de este link. Búscala por tu nombre.";
+    return;
   }
+  renderGuest();
 }
 
 function renderGuest(){
@@ -762,7 +764,7 @@ function renderGuest(){
   $("guestPassesLbl").textContent = (guest.pases === 1 ? "pase reservado" : "pases reservados") + (fam ? " para ustedes" : " para tu invitación");
   $("qtyOf").textContent = "de " + guest.pases;
   if (CONFIG.deadline){ $("deadline").hidden = false; $("deadline").textContent = "Por favor confirma antes del " + CONFIG.deadline + "."; }
-  $("introTo").hidden = false; $("introName").textContent = guest.nombre;
+  if ($("introName")){ $("introTo").hidden = false; $("introName").textContent = guest.nombre; }
   if (guest.respuesta) showDone(guest.respuesta);
   else { fillForm(null); show("vForm"); }
 }
