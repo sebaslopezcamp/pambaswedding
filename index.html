@@ -119,8 +119,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 /* ================= PORTADA ================= */
 .hero{padding-block:28px 64px;text-align:center}
 .hero-photo{max-width:980px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.photo-frame{position:relative;aspect-ratio:16/10;max-width:100%;border-radius:22px;overflow:hidden;background:linear-gradient(150deg,var(--blush),var(--peach) 60%,var(--coral));}
-.photo-frame img{width:100%;height:100%;object-fit:cover}
+.photo-frame{position:relative;aspect-ratio:3/2;max-width:100%;border-radius:22px;overflow:hidden;background:linear-gradient(150deg,var(--blush),var(--peach) 60%,var(--coral));}
+.photo-frame img{width:100%;height:100%;object-fit:cover;object-position:53% 70%}
 .photo-frame .ph{position:absolute;inset:0;display:grid;place-items:center;align-content:center;gap:10px;color:var(--card);font-family:var(--f-display);font-style:italic;font-size:19px}
 .photo-frame .ph img{width:110px;height:auto;opacity:.95}
 @media (max-width:640px){.photo-frame{aspect-ratio:4/5;border-radius:16px}}
@@ -174,7 +174,10 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 @media (max-width:640px){.gallery figure{height:auto;aspect-ratio:4/5}}
 .gallery button,.gallery .ph{display:block;width:100%;height:100%;padding:0;border:0;background:none;cursor:zoom-in;overflow:hidden}
 .gallery .ph{display:grid;place-items:center;color:var(--card);font-family:var(--f-display);font-style:italic;font-size:20px;cursor:default}
-.gallery img{width:100%;height:100%;object-fit:cover}
+.gallery figure{overflow:hidden;background:var(--olive-deep)}
+.gallery figure::before{content:"";position:absolute;inset:-30px;background:var(--bg) center/cover;filter:blur(26px) brightness(.75) saturate(1.1)}
+.gallery button{position:relative}
+.gallery img{width:100%;height:100%;object-fit:contain}
 .gal-nav{display:flex;justify-content:center;align-items:center;gap:18px;margin-top:18px}
 .gal-track{position:relative;flex:1;max-width:420px;height:4px;border-radius:2px;background:var(--line);overflow:hidden}
 .gal-thumb{position:absolute;top:0;bottom:0;left:0;border-radius:2px;background:var(--wine);will-change:transform}
@@ -314,8 +317,7 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
   <img class="deco hide-sm" src="assets/berry_r.png" alt="" style="top:74%;right:calc(50% - 450px);width:120px">
   <div class="hero-photo">
     <div class="photo-frame">
-      <!-- Cambiar por: <img src="fotos/principal.jpg" alt="Pamela y Sebastián"> -->
-      <div class="ph"><img src="assets/couple.png" alt="">Aquí va su foto principal</div>
+      <img src="fotos/principal-sm.jpg" srcset="fotos/principal-sm.jpg 1280w, fotos/principal.jpg 2560w" sizes="(max-width: 1000px) 100vw, 980px" alt="Pamela y Sebastián abrazados en un camino entre árboles" fetchpriority="high">
     </div>
   </div>
   <div class="wrap">
@@ -431,13 +433,11 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
   <!-- Para agregar fotos: reemplaza cada <div class="ph" ...>Foto N</div> por <button type="button"><img src="fotos/1.jpg" alt="Pamela y Sebastián"></button> -->
   <div class="gallery-wrap">
     <div class="gallery" id="gallery" tabindex="0" aria-label="Galería de fotos, desliza para ver más">
-      <figure><div class="ph" style="background:linear-gradient(160deg,var(--blush),var(--peach))">Foto 1</div></figure>
-      <figure><div class="ph" style="background:linear-gradient(160deg,var(--rose),var(--blush))">Foto 2</div></figure>
-      <figure><div class="ph" style="background:linear-gradient(160deg,var(--peach),var(--coral))">Foto 3</div></figure>
-      <figure><div class="ph" style="background:linear-gradient(160deg,#C9C08A,var(--olive))">Foto 4</div></figure>
-      <figure><div class="ph" style="background:linear-gradient(160deg,var(--blush),var(--rose))">Foto 5</div></figure>
-      <figure><div class="ph" style="background:linear-gradient(160deg,var(--wine-soft),var(--rose))">Foto 6</div></figure>
-      <figure><div class="ph" style="background:linear-gradient(160deg,var(--peach),var(--blush))">Foto 7</div></figure>
+      <figure style="--bg:url(fotos/g1-sm.jpg)"><button type="button"><img src="fotos/g1-sm.jpg" srcset="fotos/g1-sm.jpg 1000w, fotos/g1.jpg 2000w" sizes="(max-width: 1040px) 100vw, 1000px" data-full="fotos/g1.jpg" alt="Sebastián y Pamela frente a frente, en blanco y negro" loading="lazy"></button></figure>
+      <figure style="--bg:url(fotos/g2-sm.jpg)"><button type="button"><img src="fotos/g2-sm.jpg" srcset="fotos/g2-sm.jpg 1000w, fotos/g2.jpg 2000w" sizes="(max-width: 1040px) 100vw, 1000px" data-full="fotos/g2.jpg" alt="Las manos de Pamela y Sebastián con el anillo de compromiso" loading="lazy"></button></figure>
+      <figure style="--bg:url(fotos/g3-sm.jpg)"><button type="button"><img src="fotos/g3-sm.jpg" srcset="fotos/g3-sm.jpg 1000w, fotos/g3.jpg 2000w" sizes="(max-width: 1040px) 100vw, 1000px" data-full="fotos/g3.jpg" alt="Pamela sonriendo mientras Sebastián la abraza" loading="lazy"></button></figure>
+      <figure style="--bg:url(fotos/g4-sm.jpg)"><button type="button"><img src="fotos/g4-sm.jpg" srcset="fotos/g4-sm.jpg 1000w, fotos/g4.jpg 2000w" sizes="(max-width: 1040px) 100vw, 1000px" data-full="fotos/g4.jpg" alt="Pamela y Sebastián corriendo en un campo al atardecer" loading="lazy"></button></figure>
+      <figure style="--bg:url(fotos/g5-sm.jpg)"><button type="button"><img src="fotos/g5-sm.jpg" srcset="fotos/g5-sm.jpg 1000w, fotos/g5.jpg 2000w" sizes="(max-width: 1040px) 100vw, 1000px" data-full="fotos/g5.jpg" alt="Pamela y Sebastián caminando en un campo" loading="lazy"></button></figure>
     </div>
     <div class="center">
       <div class="gal-nav">
@@ -659,7 +659,7 @@ addEventListener("scroll", () => $("header").classList.toggle("scrolled", scroll
   const imgs = () => [...document.querySelectorAll("#gallery img")];
   let i = 0;
   const open = n => { const list = imgs(); if (!list.length) return; i = (n + list.length) % list.length;
-    $("lbImg").src = list[i].src; $("lbImg").alt = list[i].alt; $("lightbox").hidden = false; document.body.classList.add("locked"); };
+    $("lbImg").src = list[i].dataset.full || list[i].src; $("lbImg").alt = list[i].alt; $("lightbox").hidden = false; document.body.classList.add("locked"); };
   const close = () => { $("lightbox").hidden = true; document.body.classList.remove("locked"); };
   $("gallery").addEventListener("click", e => { const im = e.target.closest("button")?.querySelector("img"); if (im) open(imgs().indexOf(im)); });
   $("lbClose").onclick = close; $("lbPrev").onclick = () => open(i-1); $("lbNext").onclick = () => open(i+1);
