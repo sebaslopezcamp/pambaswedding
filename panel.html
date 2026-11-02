@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Panel de confirmaciones</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cormorant+Garamond:wght@500;600&family=Alegreya+Sans:wght@400;500;700&display=swap">
+<style>
+/* Layout: herramienta de consulta: resumen arriba (barra de pases + cifras), desglose por quién invita y grupo, luego la lista filtrable y los mensajes. Misma identidad que la invitación. */
+:root{
+  --paper:#F7F2E8; --card:#FFFDF8; --ink:#2F2420; --muted:#7A6A5E; --line:#E6DACA; --line-2:#EFE6D8;
+  --wine:#8B263E; --wine-deep:#6E1C30; --tint:#F6E7E8;
+  --yes:#6B7A2A; --yes-bg:#EEF0DC;      /* asiste: olivo */
+  --no:#B4495E;  --no-bg:#F8E4E8;       /* no asiste: rosa */
+  --wait:#9A8B7C; --wait-bg:#EFE9DF;    /* pendiente: neutro */
+  --f-script:"Pinyon Script","Snell Roundhand",cursive;
+  --f-display:"Cormorant Garamond",Garamond,"Times New Roman",serif;
+  --f-ui:"Alegreya Sans","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.5}
+img{max-width:100%;display:block}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--wine);outline-offset:2px;border-radius:6px}
+.num{font-variant-numeric:tabular-nums}
+
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--wine);z-index:20}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--wine);color:var(--paper)}
+header .bar{max-width:1120px;margin:0 auto;height:60px;display:flex;align-items:center;gap:14px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header img{width:40px}
+header h1{font-family:var(--f-display);font-weight:600;font-size:21px;margin:0;line-height:1.1}
+header .sp{flex:1}
+header button{background:transparent;border:1px solid rgba(247,242,232,.45);color:var(--paper);border-radius:999px;padding:6px 14px;font-size:14px;cursor:pointer}
+header button:hover{background:rgba(247,242,232,.12)}
+header :focus-visible{outline-color:var(--paper)}
+.stamp{font-size:13px;opacity:.75}
+@media (max-width:600px){header h1{font-size:17px;white-space:nowrap}.stamp{display:none}header .bar{gap:10px}header button{padding:5px 11px;font-size:13px}}
+
+.banner{background:var(--tint);color:var(--wine);text-align:center;font-size:14px;padding-block:7px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.banner a{color:inherit}
+main{max-width:1120px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:28px}
+h2{font-family:var(--f-display);font-weight:600;font-size:26px;margin:0;line-height:1.2}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+
+/* Login */
+.login{max-width:400px;margin:8vh auto 0;text-align:center}
+.login .script{font-family:var(--f-script);font-size:48px;color:var(--wine);margin:6px 0 0;line-height:1.1}
+.login form{display:grid;gap:12px;margin-top:20px}
+.login p{color:var(--muted);margin:6px 0 0}
+input[type=password],input[type=search],select{width:100%;background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;font-size:16px}
+input:focus,select:focus{outline:none;border-color:var(--wine)}
+.btn{background:var(--wine);color:var(--paper);border:1.5px solid var(--wine);border-radius:999px;padding:11px 22px;font-weight:700;letter-spacing:.04em;cursor:pointer}
+.btn:hover{background:var(--wine-deep)}
+.err{color:var(--wine);margin:0;font-size:15px}
+
+/* Resumen */
+.hero-stat{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px}
+.hero-stat .big{font-family:var(--f-display);font-size:clamp(44px,8vw,64px);font-weight:600;line-height:1;color:var(--wine)}
+.hero-stat .of{font-size:18px;color:var(--muted)}
+.stack{display:flex;height:16px;border-radius:8px;overflow:hidden;background:var(--wait-bg);margin-top:16px}
+.stack span{display:block;height:100%;transition:width .5s}
+.stack .s-yes{background:var(--yes)} .stack .s-no{background:var(--no)} .stack .s-wait{background:var(--wait-bg)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:12px;font-size:15px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:0}
+.legend b{color:var(--ink)}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:22px}
+.tile{border:1px solid var(--line-2);border-radius:14px;padding:14px 16px;background:var(--paper)}
+.tile .k{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tile .v{font-family:var(--f-display);font-size:34px;font-weight:600;line-height:1.1;margin-top:4px}
+.tile .s{font-size:14px;color:var(--muted)}
+@media (max-width:760px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.split{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+@media (max-width:760px){.split{grid-template-columns:1fr}}
+.brk{width:100%;border-collapse:collapse;margin-top:12px;font-size:15px}
+.brk th{font-weight:500;color:var(--muted);text-align:right;padding:6px 0 8px 10px;font-size:13px;letter-spacing:.04em;text-transform:uppercase}
+.brk th:first-child{text-align:left;padding-left:0}
+.brk td{padding:10px 0 10px 10px;border-top:1px solid var(--line-2);text-align:right;vertical-align:middle}
+.brk td:first-child{text-align:left;padding-left:0;font-weight:500}
+.mini{display:block;height:5px;border-radius:3px;background:var(--wait-bg);overflow:hidden;margin-top:6px;display:flex}
+.mini span{height:100%} .mini .y{background:var(--yes)} .mini .n{background:var(--no)}
+
+/* Lista */
+.toolbar{display:grid;gap:12px;margin-top:14px}
+.toolbar .row{display:flex;flex-wrap:wrap;gap:10px}
+.toolbar .row > *{flex:1 1 160px;min-width:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:var(--paper);border-radius:999px;padding:6px 13px;font-size:14px;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--wine);border-color:var(--wine);color:var(--paper)}
+.count-line{color:var(--muted);font-size:14px;margin:14px 0 6px}
+.list{display:grid}
+.g{border-top:1px solid var(--line-2)}
+.g-main{display:grid;grid-template-columns:minmax(0,1fr) 96px 110px auto;gap:12px;align-items:center;padding:12px 4px}
+.g-name{min-width:0}
+.g-name button{all:unset;cursor:pointer;font-weight:700;font-size:16px;line-height:1.3;display:block;overflow-wrap:anywhere}
+.g-name button:focus-visible{outline:2px solid var(--wine);outline-offset:2px;border-radius:4px}
+.g-meta{font-size:14px;color:var(--muted)}
+.g-pases{text-align:right;font-size:15px;color:var(--muted);white-space:nowrap}
+.g-pases b{color:var(--ink);font-size:17px}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 11px;font-size:14px;font-weight:500;white-space:nowrap}
+.pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.p-yes{background:var(--yes-bg);color:var(--yes)} .p-no{background:var(--no-bg);color:var(--no)} .p-wait{background:var(--wait-bg);color:var(--wait)}
+.tag{display:inline-block;margin-left:6px;font-size:12px;border:1px dashed var(--wait);color:var(--wait);border-radius:999px;padding:0 7px;vertical-align:1px}
+.g-actions{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+.act{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:5px 12px;font-size:14px;cursor:pointer;white-space:nowrap;text-decoration:none;color:var(--ink)}
+.act:hover{border-color:var(--wine);color:var(--wine)}
+.act.primary{border-color:var(--wine);color:var(--wine)}
+.sent{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--muted);cursor:pointer;white-space:nowrap}
+.sent input{width:17px;height:17px;accent-color:var(--wine)}
+.g-detail{padding:0 4px 16px;display:grid;gap:6px;font-size:15px}
+.g-detail .lbl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.g-detail blockquote{margin:0;padding:8px 12px;background:var(--paper);border-left:3px solid var(--blush,#E0AEBA);border-radius:4px;font-style:italic}
+@media (max-width:760px){
+  .g-main{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"name pill" "pases pases" "act act";row-gap:8px}
+  .g-name{grid-area:name}.g-status{grid-area:pill;text-align:right}.g-pases{grid-area:pases;text-align:left}.g-actions{grid-area:act;justify-content:flex-start}
+}
+.empty{color:var(--muted);text-align:center;padding:28px 0;margin:0}
+
+.msgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:14px}
+.msg{background:var(--paper);border:1px solid var(--line-2);border-radius:14px;padding:16px}
+.msg p{margin:0;font-family:var(--f-display);font-size:19px;line-height:1.35}
+.msg .who{font-size:14px;color:var(--muted);margin-top:10px}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:15px;z-index:30;box-shadow:0 10px 30px -10px rgba(0,0,0,.4)}
+.loading{text-align:center;color:var(--muted);padding:40px 0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <img src="assets/logo_light.png" alt="">
+    <h1>Panel de confirmaciones</h1>
+    <span class="sp"></span>
+    <span class="stamp" id="stamp"></span>
+    <button type="button" id="refresh" hidden>Actualizar</button>
+    <button type="button" id="logout" hidden>Salir</button>
+  </div>
+</header>
+<div class="banner" id="demoBanner" hidden>Vista previa con tu lista real y <b>respuestas de ejemplo</b> (no son reales) · <a href="index.html">Volver a la invitación</a></div>
+
+<main>
+  <section id="vLogin" class="login card" hidden>
+    <img src="assets/logo.png" alt="" style="width:84px;margin:0 auto">
+    <p class="script">Pamela &amp; Sebastián</p>
+    <p>Escribe la contraseña del panel.</p>
+    <form id="loginForm">
+      <input type="password" id="pw" autocomplete="current-password" placeholder="Contraseña" aria-label="Contraseña">
+      <button class="btn" type="submit" id="loginBtn">Entrar</button>
+      <p class="err" id="loginErr" hidden></p>
+      <p id="demoHint" hidden style="font-size:14px">En la vista previa cualquier contraseña funciona.</p>
+    </form>
+  </section>
+
+  <p class="loading" id="vLoading" hidden>Cargando confirmaciones…</p>
+
+  <div id="vPanel" hidden style="display:grid;gap:28px">
+    <section class="card" aria-labelledby="hResumen">
+      <h2 id="hResumen">Resumen</h2>
+      <div class="hero-stat" style="margin-top:10px">
+        <span class="big num" id="sYes">0</span>
+        <span class="of">de <b class="num" id="sPases">0</b> personas confirmadas</span>
+      </div>
+      <div class="stack" role="img" id="stack" aria-label=""><span class="s-yes" id="bYes"></span><span class="s-no" id="bNo"></span></div>
+      <div class="legend">
+        <span><i style="background:var(--yes)"></i>Asisten <b class="num" id="lYes"></b></span>
+        <span><i style="background:var(--no)"></i>No asisten <b class="num" id="lNo"></b></span>
+        <span><i style="background:var(--wait-bg);border:1px solid var(--line)"></i>Sin responder <b class="num" id="lWait"></b></span>
+      </div>
+      <div class="tiles">
+        <div class="tile"><div class="k">Respondieron</div><div class="v num" id="tResp"></div><div class="s" id="tRespS"></div></div>
+        <div class="tile"><div class="k">Pendientes</div><div class="v num" id="tWait"></div><div class="s" id="tWaitS"></div></div>
+        <div class="tile"><div class="k">No asisten</div><div class="v num" id="tNo"></div><div class="s" id="tNoS"></div></div>
+        <div class="tile"><div class="k">Sin enviar</div><div class="v num" id="tUnsent"></div><div class="s">invitaciones por mandar</div></div>
+      </div>
+    </section>
+
+    <div class="split">
+      <section class="card" aria-labelledby="hInv"><h2 id="hInv">Por quién invita</h2><table class="brk" id="byInvita"></table></section>
+      <section class="card" aria-labelledby="hGrp"><h2 id="hGrp">Por grupo</h2><table class="brk" id="byGrupo"></table></section>
+    </div>
+
+    <section class="card" aria-labelledby="hList">
+      <h2 id="hList">Invitados</h2>
+      <div class="toolbar">
+        <div class="chips" id="chips" role="group" aria-label="Filtrar por estado"></div>
+        <div class="row">
+          <input type="search" id="q" placeholder="Buscar nombre…" aria-label="Buscar nombre">
+          <select id="fInvita" aria-label="Quién invita"><option value="">Invita: todos</option></select>
+          <select id="fGrupo" aria-label="Grupo"><option value="">Grupo: todos</option></select>
+        </div>
+      </div>
+      <p class="count-line" id="countLine"></p>
+      <div class="list" id="list"></div>
+    </section>
+
+    <section class="card" aria-labelledby="hMsg">
+      <h2 id="hMsg">Mensajes para ustedes</h2>
+      <div class="msgs" id="msgs"></div>
+    </section>
+  </div>
+</main>
+<div class="toast" id="toast" hidden role="status"></div>
+
+<script>
+/* ===================== CONFIGURACIÓN ===================== */
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbxd668ZP_15JSAQSRdqkPZocpVBDUWvEwyuY35TcC2AV6ygVmzssFXufo5KQsAcWz69/exec";                 // la misma URL del Apps Script que usa la invitación
+const SITE_URL = "https://pamelaysebastian.com/";
+const FECHA_LIMITE = "19 de mayo de 2027";
+const FIRMA = "Pamela y Sebastián";
+/* ========================================================= */
+const demo = !ENDPOINT;
+const $ = id => document.getElementById(id);
+const norm = s => String(s || "").normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().trim();
+const fmt = n => n.toLocaleString("es-MX");
+const esFam = n => /^(fam\.?|familia)\s/i.test(String(n).trim());
+const show = v => ["vLogin","vLoading","vPanel"].forEach(x => $(x).hidden = x !== v);
+let guests = [], pw = "", filtro = "todos", abiertos = new Set();
+
+function ssGet(k){ try{ return sessionStorage.getItem(k) || ""; }catch(e){ return ""; } }
+function ssSet(k,v){ try{ v ? sessionStorage.setItem(k,v) : sessionStorage.removeItem(k); }catch(e){} }
+
+/* ---------- Datos ---------- */
+function linkDe(g){ return g.link || (SITE_URL + "?i=" + g.code); }
+function invitacion(g){
+  if (g.mensaje) return g.mensaje;
+  const tu = !esFam(g.nombre), link = linkDe(g);
+  return "Hola, " + g.nombre + ". Con mucha alegría queremos compartir " + (tu ? "contigo" : "con ustedes") +
+    " nuestra boda el sábado 19 de junio de 2027. Reservamos " + g.pases + (g.pases === 1 ? " pase" : " pases") +
+    " para " + (tu ? "tu" : "su") + " invitación. " + (tu ? "Aquí encuentras" : "Aquí encuentran") + " todos los detalles y " +
+    (tu ? "puedes" : "pueden") + " confirmar: " + link + "\n\nCon cariño, " + FIRMA;
+}
+function recordatorio(g){
+  const tu = !esFam(g.nombre);
+  return "Hola, " + g.nombre + ". " + (tu ? "Te" : "Les") + " recordamos confirmar " + (tu ? "tu" : "su") +
+    " asistencia a nuestra boda antes del " + FECHA_LIMITE + ". " + (tu ? "Puedes" : "Pueden") + " hacerlo aquí: " + linkDe(g) +
+    "\n\n¡Gracias! " + FIRMA;
+}
+
+async function post(body){
+  if (demo){
+    await new Promise(r => setTimeout(r, 250));
+    if (body.action === "admin") return { ok:true, guests: JSON.parse(JSON.stringify(window.PANEL_DEMO || [])), actualizado: new Date().toISOString() };
+    return { ok:true };
+  }
+  const res = await fetch(ENDPOINT, { method:"POST", body: JSON.stringify(body) });
+  return res.json();
+}
+function loadDemoData(){
+  return new Promise(res => { if (window.PANEL_DEMO) return res(); const s = document.createElement("script"); s.src = "panel-demo.js"; s.onload = res; s.onerror = res; document.head.appendChild(s); });
+}
+
+async function cargar(silencioso){
+  if (!silencioso) show("vLoading");
+  try{
+    if (demo) await loadDemoData();
+    const r = await post({ action:"admin", password: pw });
+    if (!r.ok){
+      ssSet("pw",""); show("vLogin");
+      $("loginErr").hidden = false; $("loginErr").textContent = r.error === "password" ? "Contraseña incorrecta." : "No se pudieron cargar los datos.";
+      return;
+    }
+    guests = r.guests;
+    $("stamp").textContent = "Actualizado " + new Date(r.actualizado || Date.now()).toLocaleTimeString("es-MX", { hour:"numeric", minute:"2-digit" });
+    $("refresh").hidden = false; $("logout").hidden = false;
+    llenarFiltros(); render(); show("vPanel");
+  }catch(e){
+    show("vLogin"); $("loginErr").hidden = false; $("loginErr").textContent = "No hay conexión con la hoja. Inténtalo de nuevo.";
+  }
+}
+
+/* ---------- Render ---------- */
+const estado = g => !g.respuesta ? "wait" : g.respuesta.asiste === "si" ? "yes" : "no";
+
+function resumen(list){
+  const t = { inv:list.length, pases:0, yes:0, no:0, wait:0, invYes:0, invNo:0, invWait:0, unsent:0 };
+  list.forEach(g => {
+    t.pases += g.pases; const e = estado(g);
+    if (e === "yes"){ t.yes += g.respuesta.asistentes; t.invYes++; }
+    else if (e === "no"){ t.no += g.pases; t.invNo++; }
+    else { t.wait += g.pases; t.invWait++; }
+    if (!g.enviado) t.unsent++;
+  });
+  return t;
+}
+
+function render(){
+  const t = resumen(guests);
+  const libres = t.pases - t.yes - t.no - t.wait; // pases no usados por quienes sí asisten con menos personas
+  $("sYes").textContent = fmt(t.yes); $("sPases").textContent = fmt(t.pases);
+  $("bYes").style.width = (t.yes / t.pases * 100) + "%";
+  $("bNo").style.width = ((t.no + libres) / t.pases * 100) + "%";
+  $("stack").setAttribute("aria-label", t.yes + " asisten, " + (t.no + libres) + " no asisten, " + t.wait + " sin responder");
+  $("lYes").textContent = fmt(t.yes); $("lNo").textContent = fmt(t.no + libres); $("lWait").textContent = fmt(t.wait);
+  $("tResp").textContent = (t.invYes + t.invNo) + " / " + t.inv; $("tRespS").textContent = "invitaciones";
+  $("tWait").textContent = t.invWait; $("tWaitS").textContent = "invitaciones · " + t.wait + " pases";
+  $("tNo").textContent = t.invNo; $("tNoS").textContent = "invitaciones · " + t.no + " pases";
+  $("tUnsent").textContent = t.unsent;
+
+  tablaPor("invita", $("byInvita")); tablaPor("grupo", $("byGrupo"));
+  renderLista(); renderMensajes();
+}
+
+function tablaPor(campo, el){
+  const grupos = {};
+  guests.forEach(g => { const k = g[campo] || "Sin asignar"; (grupos[k] = grupos[k] || []).push(g); });
+  el.innerHTML = "<thead><tr><th>" + (campo === "invita" ? "Invita" : "Grupo") + "</th><th>Pases</th><th>Asisten</th><th>Pendientes</th></tr></thead>";
+  const tb = document.createElement("tbody");
+  Object.keys(grupos).sort((a,b) => resumen(grupos[b]).pases - resumen(grupos[a]).pases).forEach(k => {
+    const t = resumen(grupos[k]);
+    const tr = document.createElement("tr");
+    tr.innerHTML = '<td><span class="nm"></span><span class="mini"><span class="y"></span><span class="n"></span></span></td><td class="num"></td><td class="num"></td><td class="num"></td>';
+    tr.querySelector(".nm").textContent = k;
+    tr.querySelector(".y").style.width = (t.yes / t.pases * 100) + "%";
+    tr.querySelector(".n").style.width = ((t.pases - t.yes - t.wait) / t.pases * 100) + "%";
+    const td = tr.querySelectorAll("td");
+    td[1].textContent = t.pases; td[2].textContent = t.yes; td[3].textContent = t.wait;
+    tb.appendChild(tr);
+  });
+  el.appendChild(tb);
+}
+
+function llenarFiltros(){
+  [["fInvita","invita","Invita: todos"],["fGrupo","grupo","Grupo: todos"]].forEach(([id,campo,todos]) => {
+    const sel = $(id), cur = sel.value;
+    const vals = [...new Set(guests.map(g => g[campo]).filter(Boolean))].sort();
+    sel.innerHTML = ""; sel.add(new Option(todos, ""));
+    vals.forEach(v => sel.add(new Option(v, v)));
+    sel.value = vals.includes(cur) ? cur : "";
+  });
+}
+
+const FILTROS = [
+  ["todos","Todos", () => true],
+  ["wait","Pendientes", g => estado(g) === "wait"],
+  ["yes","Asisten", g => estado(g) === "yes"],
+  ["no","No asisten", g => estado(g) === "no"],
+  ["unsent","Sin enviar", g => !g.enviado],
+];
+
+function renderLista(){
+  const base = guests.filter(g => (!$("fInvita").value || g.invita === $("fInvita").value) && (!$("fGrupo").value || g.grupo === $("fGrupo").value));
+  const chips = $("chips"); chips.innerHTML = "";
+  FILTROS.forEach(([k,label,fn]) => {
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip";
+    b.textContent = label + " (" + base.filter(fn).length + ")"; b.setAttribute("aria-pressed", filtro === k);
+    b.onclick = () => { filtro = k; renderLista(); }; chips.appendChild(b);
+  });
+  const q = norm($("q").value).split(/\s+/).filter(Boolean);
+  const fn = FILTROS.find(f => f[0] === filtro)[2];
+  const list = base.filter(fn).filter(g => q.every(t => norm(g.nombre).includes(t)));
+  const t = resumen(list);
+  $("countLine").textContent = list.length + (list.length === 1 ? " invitación · " : " invitaciones · ") + t.pases + " pases";
+  const box = $("list"); box.innerHTML = "";
+  if (!list.length){ box.innerHTML = '<p class="empty">No hay invitaciones con estos filtros.</p>'; return; }
+  list.forEach(g => box.appendChild(fila(g)));
+}
+
+function fila(g){
+  const e = estado(g), r = g.respuesta;
+  const el = document.createElement("div"); el.className = "g";
+  el.innerHTML = `
+    <div class="g-main">
+      <div class="g-name"><button type="button" aria-expanded="false"></button><div class="g-meta"></div></div>
+      <div class="g-pases num"></div>
+      <div class="g-status"><span class="pill"></span></div>
+      <div class="g-actions"></div>
+    </div>
+    <div class="g-detail" hidden></div>`;
+  const nb = el.querySelector(".g-name button");
+  nb.textContent = g.nombre;
+  const meta = el.querySelector(".g-meta");
+  meta.textContent = [g.grupo, g.invita].filter(Boolean).join(" · ");
+  if (!g.enviado){ const tg = document.createElement("span"); tg.className = "tag"; tg.textContent = "sin enviar"; meta.appendChild(tg); }
+  el.querySelector(".g-pases").innerHTML = e === "yes" ? `<b>${r.asistentes}</b> / ${g.pases} pases` : `<b>${g.pases}</b> ${g.pases === 1 ? "pase" : "pases"}`;
+  const pill = el.querySelector(".pill");
+  pill.className = "pill p-" + e; pill.textContent = e === "yes" ? "Asiste" : e === "no" ? "No asiste" : "Pendiente";
+
+  const acts = el.querySelector(".g-actions");
+  const btn = (txt, cls, onclick) => { const b = document.createElement("button"); b.type = "button"; b.className = "act " + (cls || ""); b.textContent = txt; b.onclick = onclick; acts.appendChild(b); return b; };
+  if (e === "wait" && g.enviado) btn("Copiar recordatorio", "primary", () => copiar(recordatorio(g), "Recordatorio copiado"));
+  else if (!g.enviado) btn("Copiar invitación", "primary", () => copiar(invitacion(g), "Invitación copiada"));
+  else btn("Copiar invitación", "", () => copiar(invitacion(g), "Invitación copiada"));
+  btn("Link", "", () => copiar(linkDe(g), "Link copiado"));
+  if (g.whatsapp){ const a = document.createElement("a"); a.className = "act"; a.href = g.whatsapp; a.target = "_blank"; a.rel = "noopener"; a.textContent = "WhatsApp"; acts.appendChild(a); }
+  const lab = document.createElement("label"); lab.className = "sent";
+  lab.innerHTML = '<input type="checkbox"> Enviada'; const cb = lab.querySelector("input"); cb.checked = !!g.enviado; cb.id = "sent-" + g.code;
+  cb.onchange = async () => {
+    const v = cb.checked; g.enviado = v; render();
+    try{ const res = await post({ action:"sent", password: pw, code: g.code, value: v }); if (!res.ok) throw 0; }
+    catch(err){ g.enviado = !v; render(); toast("No se pudo guardar. Revisa tu conexión."); }
+  };
+  acts.appendChild(lab);
+
+  const det = el.querySelector(".g-detail");
+  const add = (lbl, val, quote) => { const d = document.createElement("div"); d.innerHTML = '<div class="lbl"></div>'; d.firstChild.textContent = lbl;
+    const v = document.createElement(quote ? "blockquote" : "div"); v.textContent = val; d.appendChild(v); det.appendChild(d); };
+  if (r){
+    if (r.nombres && r.nombres.length) add("Asistentes", r.nombres.join(", "));
+    if (r.mensaje) add("Mensaje", r.mensaje, true);
+    if (r.actualizado) add("Respondió", new Date(r.actualizado).toLocaleString("es-MX", { day:"numeric", month:"long", hour:"numeric", minute:"2-digit" }));
+  }
+  if (g.notas) add("Notas", g.notas);
+  add("Link personal", linkDe(g));
+  const open = abiertos.has(g.code);
+  det.hidden = !open; nb.setAttribute("aria-expanded", open);
+  nb.onclick = () => { const o = det.hidden; det.hidden = !o; nb.setAttribute("aria-expanded", o); o ? abiertos.add(g.code) : abiertos.delete(g.code); };
+  return el;
+}
+
+function renderMensajes(){
+  const box = $("msgs"); box.innerHTML = "";
+  const list = guests.filter(g => g.respuesta && g.respuesta.mensaje)
+    .sort((a,b) => String(b.respuesta.actualizado).localeCompare(String(a.respuesta.actualizado)));
+  if (!list.length){ box.innerHTML = '<p class="empty" style="grid-column:1/-1">Aquí aparecerán los mensajes que les dejen al confirmar.</p>'; return; }
+  list.forEach(g => {
+    const d = document.createElement("div"); d.className = "msg";
+    d.innerHTML = "<p></p><div class='who'></div>";
+    d.querySelector("p").textContent = "“" + g.respuesta.mensaje + "”";
+    d.querySelector(".who").textContent = g.nombre;
+    box.appendChild(d);
+  });
+}
+
+/* ---------- Copiar ---------- */
+let tt;
+function toast(t){ $("toast").textContent = t; $("toast").hidden = false; clearTimeout(tt); tt = setTimeout(() => $("toast").hidden = true, 2200); }
+async function copiar(texto, ok){
+  try{ await navigator.clipboard.writeText(texto); toast(ok); }
+  catch(e){
+    const ta = document.createElement("textarea"); ta.value = texto; ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta); ta.select();
+    let done = false; try{ done = document.execCommand("copy"); }catch(_){}
+    ta.remove(); toast(done ? ok : "No se pudo copiar automáticamente");
+  }
+}
+
+/* ---------- Eventos ---------- */
+$("loginForm").addEventListener("submit", e => {
+  e.preventDefault(); pw = $("pw").value; if (!pw) return;
+  $("loginErr").hidden = true; ssSet("pw", pw); cargar();
+});
+$("logout").onclick = () => { pw = ""; ssSet("pw",""); guests = []; $("refresh").hidden = $("logout").hidden = true; $("stamp").textContent = ""; $("pw").value = ""; show("vLogin"); };
+$("refresh").onclick = () => cargar(true);
+$("q").addEventListener("input", renderLista);
+$("fInvita").onchange = renderLista; $("fGrupo").onchange = renderLista;
+
+$("demoBanner").hidden = !demo; $("demoHint").hidden = !demo;
+pw = ssGet("pw");
+if (pw) cargar(); else show("vLogin");
+</script>
+</body>
+</html>
