@@ -13,7 +13,7 @@
 <meta name="description" content="Boda de Pamela Salas y Sebastián López · 19 de junio de 2027">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Libertinus+Sans:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libertinus+Sans:ital,wght@0,400;0,700;1,400&display=swap">
 <style>
 /* Layout: sobre vino que se abre → invitación de papel en una columna; header fijo con monograma, foto principal arriba, acuarelas sueltas en los márgenes y bordes ondulados como el save the date. */
 :root{
@@ -34,7 +34,7 @@
   --line:#E3D6C3;
   --tint:#F6E7E8;
 
-  --f-script:"Pinyon Script","Snell Roundhand","Apple Chancery",cursive;
+  --f-script:var(--f-display);
   --f-display:"Libertinus Sans","Gill Sans","Segoe UI",system-ui,sans-serif;
   --f-body:"Libertinus Sans","Gill Sans","Segoe UI",system-ui,sans-serif;
 
@@ -74,6 +74,12 @@ h2{font-family:var(--f-script);font-weight:400;font-size:clamp(50px,9vw,70px);li
 .btn.ghost:hover{background:var(--wine);color:var(--paper)}
 .btn.sm{font-size:13px;padding:8px 16px}
 
+/* Textos manuscritos como trazos vectoriales (la fuente no se publica) */
+.scr{display:inline-block;width:calc(var(--sw) * var(--k,1.15) * 1em);height:auto;aspect-ratio:var(--ar);max-width:100%;vertical-align:middle;background:currentColor;
+  -webkit-mask:var(--src) center/contain no-repeat;mask:var(--src) center/contain no-repeat}
+.sr{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+h2 .scr{margin-block:-.18em -.32em}
+
 /* ================= SOBRE ================= */
 .intro{position:fixed;inset:0;z-index:100;background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(120,104,37,.14) 100%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='4' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.30  0 0 0 0 0.26  0 0 0 0 0.16  0 0 0 0.38 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23n%29'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.3 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23n%29'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='3' seed='8' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.30  0 0 0 0 0.26  0 0 0 0 0.16  0 0 0 0.2 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23n%29'/%3E%3C/svg%3E") 0 0/700px 700px,#F7F2E8;display:grid;place-items:center;overflow:hidden;
   padding:max(24px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(24px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
@@ -82,13 +88,13 @@ h2{font-family:var(--f-script);font-weight:400;font-size:clamp(50px,9vw,70px);li
 .intro-inner{display:grid;justify-items:center;gap:48px;position:relative;z-index:1;padding-top:clamp(90px,16vh,170px)}
 .intro .to{padding:6px 24px}
 .intro .to{font-family:var(--f-display);text-align:center;color:var(--wine);margin:0;font-size:17px;letter-spacing:.04em}
-.intro .to b{display:block;font-family:var(--f-script);font-weight:400;font-size:clamp(34px,8vw,46px);color:var(--wine);letter-spacing:0;line-height:1.2;margin-top:2px}
+.intro .to b{display:block;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,6vw,34px);color:var(--wine);letter-spacing:0;line-height:1.2;margin-top:2px}
 .envelope{--w:min(440px,86vw);width:var(--w);aspect-ratio:1.48;position:relative;cursor:pointer;border:0;padding:0;background:none;perspective:1400px;-webkit-tap-highlight-color:transparent}
 .envelope{--tex:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='3' seed='5' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.16  0 0 0 0 0.13  0 0 0 0 0.05  0 0 0 0.18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23n%29'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23n%29'/%3E%3C/svg%3E")}
 .envelope .back{position:absolute;inset:0;background:var(--tex),#5A4F1B;border-radius:8px;box-shadow:0 30px 60px -28px rgba(41,40,0,.55),0 6px 14px -8px rgba(41,40,0,.35)}
 .envelope .letter{position:absolute;left:6%;right:6%;top:6%;bottom:6%;background:var(--card);border-radius:6px;display:grid;place-items:center;text-align:center;
   transition:transform .9s cubic-bezier(.2,.8,.2,1) .55s;z-index:2}
-.envelope .letter span{font-family:var(--f-script);font-size:calc(var(--w) * .1);color:var(--wine);line-height:1}
+.envelope .letter > span{font-family:var(--f-script);font-size:calc(var(--w) * .1);color:var(--wine);line-height:1}
 .envelope .letter small{display:block;font-family:var(--f-display);letter-spacing:.24em;font-size:calc(var(--w) * .03);color:var(--olive);margin-top:6px}
 .envelope .pocket{position:absolute;inset:0;background:var(--tex),var(--olive);border-radius:8px;z-index:3;
   clip-path:polygon(0 0,50% 56%,100% 0,100% 100%,0 100%)}
@@ -132,7 +138,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .photo-frame::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,rgba(15,18,8,.55) 0%,rgba(15,18,8,.25) 38%,transparent 60%)}
 .hero-title{position:absolute;z-index:1;left:6%;top:42%;transform:translateY(-50%);text-align:left;color:#FBF8F1;text-shadow:0 2px 18px rgba(0,0,0,.45)}
 .hero-names{font-family:var(--f-script);font-weight:400;margin:0;line-height:.95;font-size:clamp(50px,6.6vw,86px)}
-.hero-names span{display:block}
+.hero-names > span{display:block;line-height:1}
 .hero-names .amp{font-size:.5em;margin:.05em 0 .05em 1.6em}
 .hero-names span:last-child{padding-left:.55em}
 .hero-sub{font-family:var(--f-display);font-weight:600;letter-spacing:.38em;text-transform:uppercase;font-size:clamp(12px,1.3vw,15px);margin:18px 0 0 3.2em}
@@ -254,6 +260,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .faq summary::after{content:"";flex:none;width:12px;height:12px;border-right:2px solid var(--wine);border-bottom:2px solid var(--wine);transform:rotate(45deg) translateY(-3px);transition:transform .25s}
 .faq details[open] summary::after{transform:rotate(-135deg) translateY(-3px)}
 .faq .a{padding:0 0 20px;margin:0;color:var(--ink)}
+.faq .a + .a{margin-top:-8px}
+.faq .a b{font-weight:700}
 .faq .a a{white-space:nowrap}
 
 /* ================= CONFIRMACIÓN ================= */
@@ -270,7 +278,7 @@ legend,.lbl{font-family:var(--f-display);font-weight:600;font-size:14px;letter-s
 .choice input{position:absolute;opacity:0;pointer-events:none}
 .choice label{display:block;text-align:center;border:1.5px solid var(--line);border-radius:16px;padding:16px 10px;cursor:pointer;background:var(--paper);transition:border-color .2s,background .2s}
 .choice label b{display:block;font-family:var(--f-script);font-weight:400;font-size:30px;line-height:1.15;color:var(--wine)}
-.choice label span{font-size:15px;color:var(--muted)}
+.choice label > span{font-size:15px;color:var(--muted)}
 .choice input:checked+label{border-color:var(--wine);background:var(--tint)}
 .choice input:focus-visible+label{outline:2px solid var(--wine);outline-offset:2px}
 .stepper{display:flex;align-items:center;gap:14px}
@@ -325,7 +333,7 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
     <p class="to" id="introTo" hidden>Para<b id="introName"></b></p>
     <button class="envelope" id="envelope" type="button" aria-label="Abrir la invitación">
       <span class="back"></span>
-      <span class="letter"><span>Pamela &amp; Sebastián<small>19 · 06 · 2027</small></span></span>
+      <span class="letter"><span><span class="scr" aria-hidden="true" style="--src:url(assets/script/pys.svg);--ar:5.957/1.39;--sw:5.957;--h:1.39"></span><span class="sr">Pamela &amp; Sebastián</span><small>19 · 06 · 2027</small></span></span>
       <span class="pocket"></span>
       <span class="flapwrap"><span class="flap"></span></span>
       <img class="seal" src="assets/seal.png" alt="">
@@ -359,7 +367,7 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
     <div class="photo-frame">
       <img src="fotos/principal-sm.jpg" srcset="fotos/principal-sm.jpg 1280w, fotos/principal.jpg 2560w" sizes="100vw" alt="Pamela y Sebastián abrazados en un camino entre árboles" fetchpriority="high">
       <div class="hero-title">
-        <h1 class="hero-names"><span>Pamela</span><span class="amp">&amp;</span><span>Sebastián</span></h1>
+        <h1 class="hero-names"><span><span class="scr" aria-hidden="true" style="--src:url(assets/script/pamela.svg);--ar:2.376/1.39;--sw:2.376;--h:1.39"></span><span class="sr">Pamela</span></span><span class="amp"><span class="scr" aria-hidden="true" style="--src:url(assets/script/amp.svg);--ar:0.624/1.39;--sw:0.624;--h:1.39"></span><span class="sr">&amp;</span></span><span><span class="scr" aria-hidden="true" style="--src:url(assets/script/sebastian.svg);--ar:2.879/1.39;--sw:2.879;--h:1.39"></span><span class="sr">Sebastián</span></span></h1>
       </div>
     </div>
   </div>
@@ -387,7 +395,7 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
   <img class="deco hide-sm" src="assets/hearts_br.png" alt="" style="bottom:30px;right:calc(50% - 480px);width:150px">
   <div class="wrap center">
     <p class="eyebrow">El gran día</p>
-    <h2>Programa</h2>
+    <h2><span class="scr" aria-hidden="true" style="--src:url(assets/script/programa.svg);--ar:3.1/1.39;--sw:3.1;--h:1.39"></span><span class="sr">Programa</span></h2>
     <div class="events">
       <article class="event">
         <img class="sprig" src="assets/berry_r.png" alt="">
@@ -415,7 +423,7 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
   <img class="deco" src="assets/calla.png" alt="" style="top:16px;right:max(-24px,calc(50% - 470px));width:100px">
   <div class="wrap center">
     <p class="eyebrow">Qué ponerse</p>
-    <h2>Código de vestimenta</h2>
+    <h2><span class="scr" aria-hidden="true" style="--src:url(assets/script/vestimenta.svg);--ar:5.858/1.39;--sw:5.858;--h:1.39"></span><span class="sr">Código de vestimenta</span></h2>
     <div class="dress">
       <svg class="doodle" viewBox="0 0 300 220" role="img" aria-label="Dibujo de un vestido largo y un traje con moño">
         <!-- acuarela detrás -->
@@ -453,9 +461,9 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
         <path class="ink" d="M146 150 c-6 -8 -16 -2 -10 6 l10 10 l10 -10 c6 -8 -4 -14 -10 -6 z" style="stroke:var(--rose);stroke-width:2"/>
       </svg>
       <div>
-        <p class="code">Formal</p>
+        <p class="code"><span class="scr" aria-hidden="true" style="--src:url(assets/script/formal.svg);--ar:2.363/1.39;--sw:2.363;--h:1.39"></span><span class="sr">Formal</span></p>
         <p>Les pedimos venir de etiqueta formal para acompañarnos en la ceremonia y la fiesta.</p>
-        <p class="note">Si tienen dudas sobre qué usar, escríbannos con confianza.</p>
+        <p class="note">Si tienen dudas sobre qué usar, con toda confianza pregúntennos.</p>
       </div>
     </div>
   </div>
@@ -466,7 +474,7 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
 <!-- ================= GALERÍA ================= -->
 <section id="galeria">
   <div class="wrap center">
-    <h2>Galería</h2>
+    <h2><span class="scr" aria-hidden="true" style="--src:url(assets/script/galeria.svg);--ar:2.289/1.39;--sw:2.289;--h:1.39"></span><span class="sr">Galería</span></h2>
   </div>
   <!-- Para agregar fotos: reemplaza cada <div class="ph" ...>Foto N</div> por <button type="button"><img src="fotos/1.jpg" alt="Pamela y Sebastián"></button> -->
   <div class="gallery-wrap">
@@ -500,7 +508,7 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
   <img class="deco hide-sm" src="assets/heart_tl.png" alt="" style="top:30px;left:max(-10px,calc(50% - 440px));width:70px">
   <div class="wrap center">
     <p class="eyebrow">Si desean tener un detalle</p>
-    <h2>Mesa de regalos</h2>
+    <h2><span class="scr" aria-hidden="true" style="--src:url(assets/script/regalos.svg);--ar:4.983/1.39;--sw:4.983;--h:1.39"></span><span class="sr">Mesa de regalos</span></h2>
     <p class="lede">Su presencia es lo más importante para nosotros. Si además desean hacernos un regalo, estas son algunas opciones.</p>
     <div class="gifts" id="gifts"></div>
   </div>
@@ -513,7 +521,7 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
   <img class="deco" src="assets/vine.png" alt="" style="top:0;right:max(10px,calc(50% - 420px));width:50px">
   <div class="wrap center">
     <p class="eyebrow">Por si se lo preguntan</p>
-    <h2>Preguntas frecuentes</h2>
+    <h2><span class="scr" aria-hidden="true" style="--src:url(assets/script/preguntas.svg);--ar:6.184/1.39;--sw:6.184;--h:1.39"></span><span class="sr">Preguntas frecuentes</span></h2>
     <div class="faq">
       <details>
         <summary>¿Puedo llevar a un acompañante?</summary>
@@ -533,7 +541,8 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
       </details>
       <details>
         <summary>¿Cómo llego a la iglesia y a la hacienda?</summary>
-        <p class="a">Aquí están las ubicaciones: <a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Parroquia+Todos+los+Santos">Parroquia Todos los Santos</a> y <a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Hacienda+Los+Monroy">Hacienda Los Monroy</a>.</p>
+        <p class="a"><b>Parroquia Todos los Santos:</b> por la avenida Vicente Guerrero, den vuelta en Alameda Nte. <a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Parroquia+Todos+los+Santos">Abrir en Google Maps</a></p>
+        <p class="a"><b>Hacienda Los Monroy:</b> está sobre la avenida Ejército Nacional, antes de llegar a Paseo de la Victoria si vienen por la Francisco Villarreal Torres. <a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Hacienda+Los+Monroy">Abrir en Google Maps</a></p>
       </details>
       <details>
         <summary>¿Hay estacionamiento?</summary>
@@ -555,7 +564,7 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
   <img class="deco hide-sm" src="assets/hearts_br.png" alt="" style="bottom:40px;right:calc(50% - 470px);width:140px">
   <div class="wrap center">
     <p class="eyebrow">R.S.V.P.</p>
-    <h2>Confirma tu asistencia</h2>
+    <h2><span class="scr" aria-hidden="true" style="--src:url(assets/script/confirma.svg);--ar:6.211/1.39;--sw:6.211;--h:1.39"></span><span class="sr">Confirma tu asistencia</span></h2>
     <div class="rsvp-card">
 
       <!-- Buscar invitación por nombre -->
@@ -581,8 +590,8 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
           <fieldset>
             <legend>¿Nos acompañan?</legend>
             <div class="choice">
-              <input type="radio" name="asiste" id="asisteSi" value="si"><label for="asisteSi"><b>¡Ahí estaremos!</b><span>Sí asistimos</span></label>
-              <input type="radio" name="asiste" id="asisteNo" value="no"><label for="asisteNo"><b>No podremos</b><span>Con cariño, no asistimos</span></label>
+              <input type="radio" name="asiste" id="asisteSi" value="si"><label for="asisteSi"><b><span class="scr" aria-hidden="true" style="--src:url(assets/script/ahi.svg);--ar:5.021/1.39;--sw:5.021;--h:1.39"></span><span class="sr">¡Ahí estaremos!</span></b><span>Sí asistimos</span></label>
+              <input type="radio" name="asiste" id="asisteNo" value="no"><label for="asisteNo"><b><span class="scr" aria-hidden="true" style="--src:url(assets/script/nopodremos.svg);--ar:3.916/1.39;--sw:3.916;--h:1.39"></span><span class="sr">No podremos</span></b><span>Con cariño, no asistimos</span></label>
             </div>
           </fieldset>
           <div id="yesBlock" hidden>
@@ -604,7 +613,7 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
           </div>
           <div>
             <label class="lbl" for="mensaje">Un mensaje para los novios <span style="text-transform:none;letter-spacing:0;font-weight:500">(opcional)</span></label>
-            <textarea id="mensaje" placeholder="Escríbannos algo bonito…"></textarea>
+            <textarea id="mensaje" placeholder="Déjennos unas palabras bonitas…"></textarea>
           </div>
           <p class="err" id="formErr" hidden></p>
           <div class="form-actions"><button class="btn" type="submit" id="sendBtn">Enviar confirmación</button></div>
@@ -861,10 +870,10 @@ $("rsvpForm").addEventListener("submit", async e => {
 
 function showDone(r){
   if (r.asiste === "si"){
-    $("doneTitle").textContent = "¡Gracias!";
+    $("doneTitle").innerHTML = "<span class=\"scr\" aria-hidden=\"true\" style=\"--src:url(assets/script/gracias.svg);--ar:3.023/1.39;--sw:3.023;--h:1.39\"></span><span class=\"sr\">\u00a1Gracias!</span>";
     $("doneText").textContent = "Confirmaste " + r.asistentes + " " + plural(r.asistentes, "pase", "pases") + ". Nos vemos el 19 de junio para celebrar juntos.";
   } else {
-    $("doneTitle").textContent = "Los extrañaremos";
+    $("doneTitle").innerHTML = "<span class=\"scr\" aria-hidden=\"true\" style=\"--src:url(assets/script/extranaremos.svg);--ar:5.135/1.39;--sw:5.135;--h:1.39\"></span><span class=\"sr\">Los extra\u00f1aremos</span>";
     $("doneText").textContent = "Gracias por avisarnos. Los tendremos presentes ese día.";
   }
   show("vDone");
