@@ -182,7 +182,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 
 /* ================= FOTO CON BORDES DE PAPEL RASGADO ================= */
 .love{position:relative;padding:0;overflow:visible;margin-block:8px}
-.love-photo{display:block;width:100%;height:clamp(260px,38vw,480px);object-fit:cover;object-position:50% 50%}
+.love-photo{display:block;width:100%;height:clamp(320px,48vw,640px);object-fit:cover;object-position:50% 50%}
 .tear{position:absolute;left:0;right:0;height:clamp(46px,6.5vw,92px);background:url(assets/tear-top.svg) 0 0/100% 100% no-repeat;z-index:2;pointer-events:none}
 .tear.top{top:-2px}
 .tear.bottom{bottom:-2px;background-image:url(assets/tear-bottom.svg);transform:scaleY(-1)}
@@ -366,8 +366,8 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
     <nav aria-label="Secciones">
       <a href="#programa">Programa</a>
       <a href="#vestimenta">Vestimenta</a>
-      <a href="#galeria">Galería</a>
       <a href="#regalos">Regalos</a>
+      <a href="#galeria">Galería</a>
       <a href="#preguntas">Preguntas</a>
     </nav>
     <a class="btn sm" href="#confirmar">Confirmar</a>
@@ -455,6 +455,18 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
   </div>
 </section>
 
+<div class="wave" aria-hidden="true"></div>
+
+<!-- ================= REGALOS ================= -->
+<section id="regalos">
+  <div class="wrap center">
+    <p class="eyebrow">Si desean tener un detalle</p>
+    <h2><span class="scr" aria-hidden="true" style="--src:url(assets/script/regalos.svg);--ar:4.983/1.39;--sw:4.983;--h:1.39"></span><span class="sr">Mesa de regalos</span></h2>
+    <p class="lede">Su presencia es lo más importante para nosotros. Si además desean hacernos un regalo, estas son algunas opciones.</p>
+    <div class="gifts" id="gifts"></div>
+  </div>
+</section>
+
 <div class="wave-edge" aria-hidden="true"></div>
 
 <!-- ================= GALERÍA ================= -->
@@ -486,20 +498,6 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
 </section>
 
 <div class="wave-edge bottom" aria-hidden="true"></div>
-
-<!-- ================= REGALOS ================= -->
-<section id="regalos">
-  <img class="deco hide-sm" src="assets/pink_l.png" alt="" style="bottom:20px;right:calc(50% - 480px);width:130px">
-  <img class="deco hide-sm" src="assets/heart_tl.png" alt="" style="top:30px;left:max(-10px,calc(50% - 440px));width:70px">
-  <div class="wrap center">
-    <p class="eyebrow">Si desean tener un detalle</p>
-    <h2><span class="scr" aria-hidden="true" style="--src:url(assets/script/regalos.svg);--ar:4.983/1.39;--sw:4.983;--h:1.39"></span><span class="sr">Mesa de regalos</span></h2>
-    <p class="lede">Su presencia es lo más importante para nosotros. Si además desean hacernos un regalo, estas son algunas opciones.</p>
-    <div class="gifts" id="gifts"></div>
-  </div>
-</section>
-
-<div class="wave" aria-hidden="true"></div>
 
 <!-- ================= PREGUNTAS ================= -->
 <section id="preguntas">
