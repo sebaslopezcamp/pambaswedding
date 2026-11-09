@@ -90,7 +90,7 @@ h2 .scr{margin-block:-.18em -.32em}
   padding:max(24px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(24px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
   transition:opacity .8s ease, visibility .8s}
 .intro.gone{opacity:0;visibility:hidden}
-.intro-inner{display:grid;justify-items:center;gap:48px;position:relative;z-index:1;padding-top:clamp(90px,16vh,170px)}
+.intro-inner{display:grid;justify-items:center;gap:48px;position:relative;z-index:1;padding-top:clamp(30px,7vh,90px)}
 .intro .to{padding:6px 24px}
 .intro .to{font-family:var(--f-display);text-align:center;color:var(--wine);margin:0;font-size:17px;letter-spacing:.04em}
 .intro .to b{display:block;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,6vw,34px);color:var(--wine);letter-spacing:0;line-height:1.2;margin-top:2px}
@@ -193,7 +193,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 
 /* ================= VESTIMENTA ================= */
 .dress{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center;margin-top:40px;text-align:left}
-.dress .attire{width:100%;max-width:240px;height:auto;margin:0 auto;display:block}
+.dress .attire{width:min(170px,46vw);max-width:100%;aspect-ratio:1;height:auto;margin:0 auto;display:block;box-sizing:border-box;padding:min(34px,9vw);background:rgba(224,174,186,.45);border-radius:50%;object-fit:contain}
 .dress .code{font-family:var(--f-script);font-size:clamp(46px,8vw,60px);color:var(--wine);line-height:1;margin:0}
 .dress p{margin:12px 0 0}
 .dress .note{color:var(--muted)}
@@ -343,7 +343,7 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
 
 <!-- ================= SOBRE ================= -->
 <div class="intro" id="intro">
-  <img class="deco" src="assets/top_cluster.png" alt="" style="top:0;left:50%;width:min(320px,70vw);margin-left:calc(min(320px,70vw) / -2)">
+  <img class="deco" src="assets/top_cluster.png" alt="" style="top:0;left:50%;width:min(190px,44vw);margin-left:calc(min(190px,44vw) / -2)">
   <img class="deco" src="assets/green_bl.png" alt="" style="bottom:-10px;left:-20px;width:min(220px,46vw)">
   <div class="intro-inner">
     <p class="to" id="introTo" hidden>Para<b id="introName"></b></p>
@@ -441,7 +441,6 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
 </section>
 
 <section id="vestimenta">
-  <img class="deco" src="assets/calla.png" alt="" style="top:16px;right:max(-24px,calc(50% - 470px));width:100px">
   <div class="wrap center">
     <p class="eyebrow">Qué ponerse</p>
     <h2><span class="scr" aria-hidden="true" style="--src:url(assets/script/vestimenta.svg);--ar:5.858/1.39;--sw:5.858;--h:1.39"></span><span class="sr">Código de vestimenta</span></h2>
