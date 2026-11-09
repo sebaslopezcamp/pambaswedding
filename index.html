@@ -181,12 +181,14 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 
 /* ================= FOTO CON BORDES DE PAPEL RASGADO ================= */
 .love{position:relative;padding:0;overflow:visible;margin-block:8px}
-.love-photo{display:block;width:100%;height:clamp(320px,52vw,620px);object-fit:cover;object-position:50% 45%}
+.love-photo{display:block;width:100%;height:clamp(260px,38vw,480px);object-fit:cover;object-position:50% 50%}
 .tear{position:absolute;left:0;right:0;height:clamp(46px,6.5vw,92px);background:url(assets/tear-top.svg) 0 0/100% 100% no-repeat;z-index:2;pointer-events:none;filter:drop-shadow(0 2px 2px rgba(41,40,0,.18))}
 .tear.top{top:-2px}
 .tear.bottom{bottom:-2px;background-image:url(assets/tear-bottom.svg);transform:scaleY(-1);filter:drop-shadow(0 -2px 2px rgba(41,40,0,.18))}
-.love-title{position:absolute;z-index:1;left:8%;right:auto;top:clamp(70px,10vw,130px);text-align:left;color:#FBF8F1;font-size:clamp(40px,6.4vw,78px);filter:drop-shadow(0 2px 10px rgba(0,0,0,.45))}
-@media (max-width:640px){.love-photo{height:auto;aspect-ratio:4/5;object-position:46% 50%}.love-title{font-size:clamp(34px,10vw,46px);left:0;right:0;text-align:center;top:clamp(60px,16vw,90px)}}
+.love-title{position:absolute;z-index:1;left:auto;right:4%;top:auto;bottom:clamp(50px,5.5vw,80px);text-align:right;color:#FBF8F1;font-size:clamp(26px,3.6vw,48px);filter:drop-shadow(0 2px 10px rgba(0,0,0,.45))}
+.love-title .ln{display:block;line-height:0}
+.love-title .l2{margin:-.35em 1.2em 0 0}
+@media (max-width:640px){.love-photo{height:auto;aspect-ratio:1/1;object-position:46% 50%}.love-title{font-size:clamp(24px,7vw,32px);left:0;right:0;text-align:center;top:clamp(46px,12vw,64px);bottom:auto}.love-title .l2{margin-right:0}}
 
 /* ================= VESTIMENTA ================= */
 .dress{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center;margin-top:40px;text-align:left}
@@ -439,10 +441,10 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
 </section>
 
 <!-- ================= FOTO: JUNTOS ================= -->
-<section class="love" aria-label="Juntos, para siempre">
+<section class="love" aria-label="You have bewitched me body and soul">
   <div class="tear top" aria-hidden="true"></div>
   <img class="love-photo" src="fotos/g2-sm.jpg" srcset="fotos/g2-sm.jpg 1000w, fotos/g2.jpg 2000w" sizes="100vw" alt="Las manos de Pamela y Sebastián con el anillo de compromiso" loading="lazy">
-  <div class="love-title"><span class="scr" aria-hidden="true" style="--src:url(assets/script/juntos.svg);--ar:5.887/1.39;--sw:5.887;--h:1.39"></span><span class="sr">Juntos, para siempre</span></div>
+  <div class="love-title"><span class="ln"><span class="scr" aria-hidden="true" style="--src:url(assets/script/bewitched1.svg);--ar:6.906/1.39;--sw:6.906;--h:1.39"></span></span><span class="ln l2"><span class="scr" aria-hidden="true" style="--src:url(assets/script/bewitched2.svg);--ar:4.161/1.39;--sw:4.161;--h:1.39"></span></span><span class="sr">You have bewitched me, body and soul...</span></div>
   <div class="tear bottom" aria-hidden="true"></div>
 </section>
 
