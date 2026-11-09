@@ -34,7 +34,7 @@ button,input,select{font:inherit;color:inherit}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--wine);z-index:20}
 header{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--wine);color:var(--paper)}
 header .bar{max-width:1120px;margin:0 auto;height:60px;display:flex;align-items:center;gap:14px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-header img{width:40px}
+header img{height:28px;width:auto;display:block}
 header h1{font-family:var(--f-display);font-weight:600;font-size:21px;margin:0;line-height:1.1}
 header .sp{flex:1}
 header .back{display:inline-flex;align-items:center;gap:4px;color:var(--paper);text-decoration:none;border:1px solid rgba(247,242,232,.45);border-radius:999px;padding:6px 14px 6px 10px;font-size:14px;white-space:nowrap}
@@ -149,7 +149,7 @@ h2 .scr{margin-block:-.18em -.32em}
 <body>
 <header>
   <div class="bar">
-    <a href="./" class="home" aria-label="Volver a la invitación"><img src="assets/logo_light.png" alt=""></a>
+    <a href="./" class="home" aria-label="Volver a la invitación"><img src="assets/ps-light.svg" alt=""></a>
     <h1><span class="long">Panel de confirmaciones</span><span class="short">Panel</span></h1>
     <span class="sp"></span>
     <span class="stamp" id="stamp"></span>

@@ -117,7 +117,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .site-header.scrolled{box-shadow:0 6px 18px -10px rgba(60,10,25,.5)}
 .site-header .bar{height:var(--header-h);display:flex;align-items:center;gap:20px;max-width:1120px;margin:0 auto;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.site-header .mono{width:48px;flex:none}
+.site-header .mono{height:34px;width:auto;flex:none;display:block}
 .site-header nav{display:flex;gap:22px;margin-left:auto}
 .site-header nav a{font-family:var(--f-display);font-weight:600;font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:var(--paper);text-decoration:none;padding:6px 0;border-bottom:1px solid transparent}
 .site-header nav a:hover{border-bottom-color:var(--paper)}
@@ -314,7 +314,7 @@ textarea{min-height:96px;resize:vertical}
 .banner{background:var(--tint);color:var(--wine);text-align:center;font-size:14px;padding-block:7px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 
 footer{text-align:center;padding-block:56px 64px}
-footer img{width:84px;margin:0 auto;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+footer img{width:130px;height:auto;margin:0 auto;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:uppercase;font-size:14px;color:var(--olive);margin:16px 0 0}
 
 @keyframes sway{from{transform:rotate(-2deg)}to{transform:rotate(2deg)}}
@@ -354,7 +354,7 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
 <!-- ================= HEADER ================= -->
 <header class="site-header" id="header">
   <div class="bar">
-    <a href="#inicio" aria-label="Inicio"><img class="mono" src="assets/logo_light.png" alt="Pamela &amp; Sebastián"></a>
+    <a href="#inicio" aria-label="Inicio"><img class="mono" src="assets/ps-light.svg" alt="Pamela &amp; Sebastián"></a>
     <nav aria-label="Secciones">
       <a href="#programa">Programa</a>
       <a href="#vestimenta">Vestimenta</a>
@@ -641,7 +641,7 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
 </main>
 
 <footer>
-  <img src="assets/logo.png" alt="" id="footerMono">
+  <img src="assets/ps-wine.svg" alt="" id="footerMono">
   <p>Pamela &amp; Sebastián · 19.06.2027</p>
 </footer>
 
