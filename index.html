@@ -255,7 +255,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 /* ================= FAQ ================= */
 .faq{max-width:680px;margin:40px auto 0;text-align:left;display:grid;gap:12px}
 .faq details{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:0 22px}
-.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 0;font-family:var(--f-display);font-weight:600;font-size:21px;line-height:1.3;color:var(--ink)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 0;font-family:var(--f-display);font-weight:600;font-size:18px;line-height:1.35;color:var(--ink)}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:"";flex:none;width:12px;height:12px;border-right:2px solid var(--wine);border-bottom:2px solid var(--wine);transform:rotate(45deg) translateY(-3px);transition:transform .25s}
 .faq details[open] summary::after{transform:rotate(-135deg) translateY(-3px)}
@@ -306,7 +306,7 @@ textarea{min-height:96px;resize:vertical}
 .banner{background:var(--tint);color:var(--wine);text-align:center;font-size:14px;padding-block:7px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 
 footer{text-align:center;padding-block:56px 64px}
-footer img{width:84px;margin:0 auto}
+footer img{width:84px;margin:0 auto;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:uppercase;font-size:14px;color:var(--olive);margin:16px 0 0}
 
 @keyframes sway{from{transform:rotate(-2deg)}to{transform:rotate(2deg)}}
@@ -633,7 +633,7 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
 </main>
 
 <footer>
-  <img src="assets/logo.png" alt="">
+  <img src="assets/logo.png" alt="" id="footerMono">
   <p>Pamela &amp; Sebastián · 19.06.2027</p>
 </footer>
 
@@ -910,6 +910,17 @@ const initial = (new URLSearchParams(location.search).get("i") || "").trim().toL
 if (initial) load(initial);
 else if (demo) load("k7m2qx");   // en la vista previa abre una invitación de ejemplo
 else show("vSearch");
+
+/* ---------- Acceso escondido al panel: tocar 3 veces el monograma del pie de página ---------- */
+(function(){
+  const m = document.getElementById("footerMono"); if (!m) return;
+  let n = 0, t;
+  m.addEventListener("click", () => {
+    n++; clearTimeout(t);
+    if (n >= 3){ n = 0; location.href = "panel.html"; return; }
+    t = setTimeout(() => n = 0, 1200);
+  });
+})();
 </script>
 
 </body>
