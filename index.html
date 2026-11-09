@@ -306,7 +306,7 @@ textarea{min-height:96px;resize:vertical}
 .banner{background:var(--tint);color:var(--wine);text-align:center;font-size:14px;padding-block:7px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 
 footer{text-align:center;padding-block:56px 64px}
-footer img{width:84px;margin:0 auto;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+footer img{width:84px;margin:0 auto;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:uppercase;font-size:14px;color:var(--olive);margin:16px 0 0}
 
 @keyframes sway{from{transform:rotate(-2deg)}to{transform:rotate(2deg)}}
@@ -911,15 +911,20 @@ if (initial) load(initial);
 else if (demo) load("k7m2qx");   // en la vista previa abre una invitación de ejemplo
 else show("vSearch");
 
-/* ---------- Acceso escondido al panel: tocar 3 veces el monograma del pie de página ---------- */
+/* ---------- Acceso escondido al panel: 3 toques rápidos o mantener presionado el monograma del pie ---------- */
 (function(){
   const m = document.getElementById("footerMono"); if (!m) return;
-  let n = 0, t;
+  const go = () => { location.href = "panel.html"; };
+  let n = 0, t, hold;
   m.addEventListener("click", () => {
     n++; clearTimeout(t);
-    if (n >= 3){ n = 0; location.href = "panel.html"; return; }
+    if (n >= 3){ n = 0; go(); return; }
     t = setTimeout(() => n = 0, 1200);
   });
+  m.addEventListener("pointerdown", () => { clearTimeout(hold); hold = setTimeout(go, 1500); });
+  ["pointerup","pointerleave","pointercancel"].forEach(ev => m.addEventListener(ev, () => clearTimeout(hold)));
+  m.addEventListener("contextmenu", e => e.preventDefault());
+  m.addEventListener("dragstart", e => e.preventDefault());
 })();
 </script>
 
