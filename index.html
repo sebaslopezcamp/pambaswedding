@@ -233,16 +233,24 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 #galeria .gallery figure{background:var(--olive-deep)}
 
 /* ================= REGALOS ================= */
-.gifts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-top:40px}
-.gift{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:30px 22px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px}
-.gift .ic{width:54px;height:54px;border-radius:50%;background:var(--tint);display:grid;place-items:center}
-.gift .ic svg{width:28px;height:28px;fill:none;stroke:var(--wine);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.gift h3{font-family:var(--f-display);font-weight:600;font-size:24px;margin:4px 0 0;line-height:1.2}
-.gift p{margin:0;color:var(--muted);font-size:16px}
-.gift .btn{margin-top:auto}
-.gift .soon{margin-top:auto;font-family:var(--f-display);font-style:italic;color:var(--rose);font-size:16px}
-.acct{font-family:var(--f-display);font-size:18px;color:var(--ink);line-height:1.5}
-.acct b{font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.gift-card{max-width:620px;margin:40px auto 0;background:var(--wine);color:var(--paper);border-radius:18px;padding:clamp(24px,5vw,40px) clamp(20px,5vw,44px);box-shadow:0 28px 50px -34px rgba(110,28,48,.6);text-align:left}
+.gift-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 4px;border-bottom:1px dashed rgba(247,242,232,.3);color:inherit;text-decoration:none}
+.gift-row:last-of-type{border-bottom:0}
+.gift-row:first-child{padding-top:4px}
+a.gift-row:hover .go{gap:12px}
+.gift-row:focus-visible{outline:2px solid var(--blush);outline-offset:2px;border-radius:6px}
+a.gift-row:hover .nm{color:var(--blush)}
+.gift-row .nm{font-family:var(--f-display);font-size:26px;line-height:1.15;color:var(--paper);transition:color .2s}
+.gift-row .sub{display:block;font-size:15px;color:rgba(247,242,232,.72);margin-top:2px}
+.gift-row .go{display:inline-flex;align-items:center;gap:8px;flex:none;font-family:var(--f-display);font-weight:700;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper);transition:gap .2s}
+.gift-row .go svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.gift-row .soon{flex:none;font-style:italic;color:var(--blush);font-size:15px}
+.gift-row .copy{flex:none;background:none;border:1.5px solid var(--blush);color:var(--paper);border-radius:999px;padding:6px 14px;font-family:var(--f-display);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+.gift-orn{display:flex;align-items:center;gap:14px;margin:14px 0 14px;color:var(--blush)}
+.gift-orn::before,.gift-orn::after{content:"";flex:1;height:1px;background:rgba(247,242,232,.3)}
+.gift-orn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round}
+.gift-note{margin:0;text-align:center;font-style:italic;color:rgba(247,242,232,.85);max-width:34em;margin-inline:auto}
+@media (max-width:480px){.gift-row .nm{font-size:22px}.gift-row .go span{display:none}}
 .lightbox{position:fixed;inset:0;z-index:90;background:rgba(41,40,0,.92);display:grid;place-items:center;
   padding:max(56px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(56px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
 .lightbox img{max-height:82vh;max-width:min(1100px,100%);border-radius:10px;object-fit:contain}
@@ -736,33 +744,29 @@ addEventListener("scroll", () => $("header").classList.toggle("scrolled", scroll
 
 /* ---------- Mesa de regalos ---------- */
 (function(){
-  const ICON = {
-    store:'<svg viewBox="0 0 24 24"><path d="M4 9h16l-1.2 11H5.2z"/><path d="M8.5 9V7a3.5 3.5 0 0 1 7 0v2"/></svg>',
-    bank:'<svg viewBox="0 0 24 24"><path d="M3 10 12 4l9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></svg>',
-    gift:'<svg viewBox="0 0 24 24"><rect x="3.5" y="9" width="17" height="11" rx="1"/><path d="M2.5 9h19M12 9v11"/><path d="M12 9c-2-4-6-4-6-1.5S9.5 9 12 9c2.5 0 6 1 6-1.5S14 5 12 9z"/></svg>',
-  };
-  const el = (html) => { const d = document.createElement("div"); d.className = "gift"; d.innerHTML = html; return d; };
-  const box = $("gifts");
+  const ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  const HEART = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>';
+  const card = document.createElement("div"); card.className = "gift-card";
+  const row = (tag) => { const r = document.createElement(tag); r.className = "gift-row"; r.innerHTML = '<span><span class="nm"></span><span class="sub"></span></span>'; return r; };
   REGALOS.mesas.forEach(m => {
-    const c = el(`<span class="ic">${ICON.store}</span><h3></h3><p></p>`);
-    c.querySelector("h3").textContent = m.tienda;
-    c.querySelector("p").textContent = m.numero ? "Mesa no. " + m.numero : "Mesa de regalos";
-    if (m.url){ const a = document.createElement("a"); a.className = "btn ghost sm"; a.target = "_blank"; a.rel = "noopener"; a.href = m.url; a.textContent = "Ver mesa"; c.appendChild(a); }
-    else { const s = document.createElement("span"); s.className = "soon"; s.textContent = "Próximamente"; c.appendChild(s); }
-    box.appendChild(c);
+    const r = row(m.url ? "a" : "div");
+    r.querySelector(".nm").textContent = m.tienda;
+    r.querySelector(".sub").textContent = m.numero ? "Mesa no. " + m.numero : "Mesa de regalos en línea";
+    if (m.url){ r.href = m.url; r.target = "_blank"; r.rel = "noopener"; r.setAttribute("aria-label", "Ver mesa de regalos en " + m.tienda); r.insertAdjacentHTML("beforeend", '<span class="go"><span>Ver mesa</span>' + ARROW + '</span>'); }
+    else r.insertAdjacentHTML("beforeend", '<span class="soon">Próximamente</span>');
+    card.appendChild(r);
   });
   const t = REGALOS.transferencia;
   if (t){
-    const c = el(`<span class="ic">${ICON.bank}</span><h3>Transferencia</h3><div class="acct"><span class="bk"></span><br><span class="ti"></span><br>CLABE <b class="cl"></b></div><button type="button" class="btn ghost sm">Copiar CLABE</button>`);
-    c.querySelector(".bk").textContent = t.banco; c.querySelector(".ti").textContent = t.titular; c.querySelector(".cl").textContent = t.clabe;
-    const b = c.querySelector("button");
-    b.onclick = async () => { try{ await navigator.clipboard.writeText(t.clabe); b.textContent = "Copiada"; }
-      catch(e){ const r = document.createRange(); r.selectNodeContents(c.querySelector(".cl")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = "Selecciónala y cópiala"; }
-      setTimeout(() => b.textContent = "Copiar CLABE", 2500); };
-    box.appendChild(c);
-  } else {
-    box.appendChild(el(`<span class="ic">${ICON.gift}</span><h3>El día de la fiesta</h3><p>Habrá una mesa de regalos en la recepción para cualquier otro detalle que deseen traer.</p>`));
+    const r = row("div");
+    r.querySelector(".nm").textContent = "Transferencia";
+    r.querySelector(".sub").textContent = t.banco + " · " + t.titular + " · CLABE " + t.clabe;
+    const b = document.createElement("button"); b.type = "button"; b.className = "copy"; b.textContent = "Copiar CLABE";
+    b.onclick = async () => { try{ await navigator.clipboard.writeText(t.clabe); b.textContent = "Copiada"; }catch(e){ b.textContent = "No se pudo copiar"; } setTimeout(() => b.textContent = "Copiar CLABE", 2500); };
+    r.appendChild(b); card.appendChild(r);
   }
+  card.insertAdjacentHTML("beforeend", '<div class="gift-orn">' + HEART + '</div><p class="gift-note">El día de la fiesta también habrá una mesa de regalos en la recepción para cualquier otro detalle que deseen traer.</p>');
+  $("gifts").appendChild(card);
 })();
 
 /* ---------- Datos (vista previa o Google Sheet) ---------- */
