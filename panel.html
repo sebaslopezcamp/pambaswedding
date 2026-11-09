@@ -37,11 +37,16 @@ header .bar{max-width:1120px;margin:0 auto;height:60px;display:flex;align-items:
 header img{width:40px}
 header h1{font-family:var(--f-display);font-weight:600;font-size:21px;margin:0;line-height:1.1}
 header .sp{flex:1}
+header .back{display:inline-flex;align-items:center;gap:4px;color:var(--paper);text-decoration:none;border:1px solid rgba(247,242,232,.45);border-radius:999px;padding:6px 14px 6px 10px;font-size:14px;white-space:nowrap}
+header .back:hover{background:rgba(247,242,232,.12)}
+header .back svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+header .home{display:block;flex:none}
+header .short{display:none}
 header button{background:transparent;border:1px solid rgba(247,242,232,.45);color:var(--paper);border-radius:999px;padding:6px 14px;font-size:14px;cursor:pointer}
 header button:hover{background:rgba(247,242,232,.12)}
 header :focus-visible{outline-color:var(--paper)}
 .stamp{font-size:13px;opacity:.75}
-@media (max-width:600px){header h1{font-size:17px;white-space:nowrap}.stamp{display:none}header .bar{gap:10px}header button{padding:5px 11px;font-size:13px}}
+@media (max-width:600px){header .long{display:none}header .short{display:inline}header .back{padding:5px 11px 5px 8px;font-size:13px}header h1{font-size:17px;white-space:nowrap}.stamp{display:none}header .bar{gap:10px}header button{padding:5px 11px;font-size:13px}}
 
 .banner{background:var(--tint);color:var(--wine);text-align:center;font-size:14px;padding-block:7px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .banner a{color:inherit}
@@ -50,10 +55,12 @@ h2{font-family:var(--f-display);font-weight:600;font-size:26px;margin:0;line-hei
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
 
 /* Login */
-.login{max-width:400px;margin:8vh auto 0;text-align:center}
+.login{max-width:400px;width:100%;min-width:0;margin:8vh auto 0;text-align:center}
 .login .script{font-family:var(--f-script);font-size:48px;color:var(--wine);margin:6px 0 0;line-height:1.1}
 .login form{display:grid;gap:12px;margin-top:20px}
 .login p{color:var(--muted);margin:6px 0 0}
+input[type=password]{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;letter-spacing:.12em}
+input[type=password]::placeholder{letter-spacing:0}
 input[type=password],input[type=search],select{width:100%;background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;font-size:16px}
 input:focus,select:focus{outline:none;border-color:var(--wine)}
 .btn{background:var(--wine);color:var(--paper);border:1.5px solid var(--wine);border-radius:999px;padding:11px 22px;font-weight:700;letter-spacing:.04em;cursor:pointer}
@@ -142,10 +149,11 @@ h2 .scr{margin-block:-.18em -.32em}
 <body>
 <header>
   <div class="bar">
-    <img src="assets/logo_light.png" alt="">
-    <h1>Panel de confirmaciones</h1>
+    <a href="./" class="home" aria-label="Volver a la invitación"><img src="assets/logo_light.png" alt=""></a>
+    <h1><span class="long">Panel de confirmaciones</span><span class="short">Panel</span></h1>
     <span class="sp"></span>
     <span class="stamp" id="stamp"></span>
+    <a href="./" class="back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Invitación</a>
     <button type="button" id="refresh" hidden>Actualizar</button>
     <button type="button" id="logout" hidden>Salir</button>
   </div>
