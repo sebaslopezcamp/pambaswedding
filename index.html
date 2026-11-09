@@ -109,7 +109,7 @@ h2 .scr{margin-block:-.18em -.32em}
 .envelope .seal{position:absolute;left:50%;top:60%;width:26%;transform:translate(-50%,-50%);z-index:5;border-radius:50%;
   box-shadow:0 4px 10px rgba(60,10,25,.35);transition:opacity .3s, transform .3s}
 .envelope:hover .seal{transform:translate(-50%,-50%) scale(1.04)}
-.intro .tap{font-family:var(--f-display);font-weight:600;letter-spacing:.24em;text-transform:uppercase;font-size:14px;color:var(--wine-deep);margin:0;animation:pulse 2.4s ease-in-out infinite}
+.intro .tap{font-family:var(--f-display);font-weight:600;letter-spacing:.24em;text-transform:uppercase;font-size:14px;color:var(--wine-deep);margin:0}
 @keyframes pulse{50%{opacity:.45}}
 .envelope.open .seal{opacity:0;transform:translate(-50%,-50%) scale(.8)}
 .envelope.open .flapwrap{transform:rotateX(180deg);z-index:1}
@@ -351,9 +351,8 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
 
 <!-- ================= SOBRE ================= -->
 <div class="intro" id="intro">
-  <img class="deco sway" src="assets/top_cluster.png" alt="" style="top:0;left:50%;width:min(320px,70vw);margin-left:calc(min(320px,70vw) / -2)">
+  <img class="deco" src="assets/top_cluster.png" alt="" style="top:0;left:50%;width:min(320px,70vw);margin-left:calc(min(320px,70vw) / -2)">
   <img class="deco" src="assets/green_bl.png" alt="" style="bottom:-10px;left:-20px;width:min(220px,46vw)">
-  <img class="deco" src="assets/hearts_br.png" alt="" style="bottom:20px;right:-10px;width:min(170px,36vw)">
   <div class="intro-inner">
     <p class="to" id="introTo" hidden>Para<b id="introName"></b></p>
     <button class="envelope" id="envelope" type="button" aria-label="Abrir la invitación">
