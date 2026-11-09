@@ -144,15 +144,16 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .hero-title{position:absolute;z-index:1;left:6%;top:42%;transform:translateY(-50%);text-align:left;color:#FBF8F1;text-shadow:0 2px 18px rgba(0,0,0,.45)}
 .hero-names{font-family:var(--f-script);font-weight:400;margin:0;line-height:.95;font-size:clamp(50px,6.6vw,86px)}
 .hero-names > span{display:block;line-height:1}
+.hero-names > .hn-one{display:none}
 .hero-names .amp{font-size:.5em;margin:.05em 0 .05em 1.6em}
-.hero-names span:last-child{padding-left:.55em}
+.hero-names > span:nth-child(3){padding-left:.55em}
 .hero-sub{font-family:var(--f-display);font-weight:600;letter-spacing:.38em;text-transform:uppercase;font-size:clamp(12px,1.3vw,15px);margin:18px 0 0 3.2em}
 @media (max-width:640px){
-  .photo-frame::after{background:linear-gradient(180deg,rgba(15,18,8,.62) 0%,rgba(15,18,8,.32) 34%,transparent 55%)}
-  .hero-title{left:0;right:0;top:7%;transform:none;text-align:center}
-  .hero-names{font-size:clamp(54px,16vw,76px)}
-  .hero-names .amp{margin:0}
-  .hero-names span:last-child{padding-left:0}
+  .photo-frame::after{background:linear-gradient(0deg,rgba(15,18,8,.7) 0%,rgba(15,18,8,.35) 18%,transparent 34%)}
+  .hero-title{left:0;right:0;top:auto;bottom:4.5%;transform:none;text-align:center}
+  .hero-names{font-size:clamp(34px,10.5vw,46px)}
+  .hero-names > span{display:none}
+  .hero-names > .hn-one{display:block}
   .hero-sub{margin:12px 0 0;letter-spacing:.32em}
 }
 .names{font-family:var(--f-script);color:var(--brick);font-weight:400;line-height:1;margin:14px 0 0;font-size:clamp(54px,11vw,92px)}
@@ -391,7 +392,7 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
     <div class="photo-frame">
       <img src="fotos/principal-sm.jpg" srcset="fotos/principal-sm.jpg 1280w, fotos/principal.jpg 2560w" sizes="100vw" alt="Pamela y Sebastián abrazados en un camino entre árboles" fetchpriority="high">
       <div class="hero-title">
-        <h1 class="hero-names"><span><span class="scr" aria-hidden="true" style="--src:url(assets/script/pamela.svg);--ar:2.376/1.39;--sw:2.376;--h:1.39"></span><span class="sr">Pamela</span></span><span class="amp"><span class="scr" aria-hidden="true" style="--src:url(assets/script/amp.svg);--ar:0.624/1.39;--sw:0.624;--h:1.39"></span><span class="sr">&amp;</span></span><span><span class="scr" aria-hidden="true" style="--src:url(assets/script/sebastian.svg);--ar:2.879/1.39;--sw:2.879;--h:1.39"></span><span class="sr">Sebastián</span></span></h1>
+        <h1 class="hero-names"><span><span class="scr" aria-hidden="true" style="--src:url(assets/script/pamela.svg);--ar:2.376/1.39;--sw:2.376;--h:1.39"></span><span class="sr">Pamela</span></span><span class="amp"><span class="scr" aria-hidden="true" style="--src:url(assets/script/amp.svg);--ar:0.624/1.39;--sw:0.624;--h:1.39"></span><span class="sr">&amp;</span></span><span><span class="scr" aria-hidden="true" style="--src:url(assets/script/sebastian.svg);--ar:2.879/1.39;--sw:2.879;--h:1.39"></span><span class="sr">Sebastián</span></span><span class="hn-one"><span class="scr" aria-hidden="true" style="--src:url(assets/script/pys.svg);--ar:5.957/1.39;--sw:5.957;--h:1.39"></span><span class="sr">Pamela &amp; Sebastián</span></span></h1>
       </div>
     </div>
   </div>
