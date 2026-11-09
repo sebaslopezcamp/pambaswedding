@@ -179,6 +179,15 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .event .until{color:var(--muted);font-style:italic;margin:6px 0 0}
 .event .btn{margin-top:22px}
 
+/* ================= FOTO CON BORDES DE PAPEL RASGADO ================= */
+.love{position:relative;padding:0;overflow:visible;margin-block:8px}
+.love-photo{display:block;width:100%;height:clamp(320px,52vw,620px);object-fit:cover;object-position:50% 45%}
+.tear{position:absolute;left:0;right:0;height:clamp(46px,6.5vw,92px);background:url(assets/tear-top.svg) 0 0/100% 100% no-repeat;z-index:2;pointer-events:none;filter:drop-shadow(0 2px 2px rgba(41,40,0,.18))}
+.tear.top{top:-2px}
+.tear.bottom{bottom:-2px;background-image:url(assets/tear-bottom.svg);transform:scaleY(-1);filter:drop-shadow(0 -2px 2px rgba(41,40,0,.18))}
+.love-title{position:absolute;z-index:1;left:8%;right:auto;top:clamp(70px,10vw,130px);text-align:left;color:#FBF8F1;font-size:clamp(40px,6.4vw,78px);filter:drop-shadow(0 2px 10px rgba(0,0,0,.45))}
+@media (max-width:640px){.love-photo{height:auto;aspect-ratio:4/5;object-position:46% 50%}.love-title{font-size:clamp(34px,10vw,46px);left:0;right:0;text-align:center;top:clamp(60px,16vw,90px)}}
+
 /* ================= VESTIMENTA ================= */
 .dress{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center;margin-top:40px;text-align:left}
 .dress svg{width:100%;max-width:380px;height:auto;margin:0 auto;display:block}
@@ -429,9 +438,14 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
   </div>
 </section>
 
-<div class="wave" aria-hidden="true"></div>
+<!-- ================= FOTO: JUNTOS ================= -->
+<section class="love" aria-label="Juntos, para siempre">
+  <div class="tear top" aria-hidden="true"></div>
+  <img class="love-photo" src="fotos/g2-sm.jpg" srcset="fotos/g2-sm.jpg 1000w, fotos/g2.jpg 2000w" sizes="100vw" alt="Las manos de Pamela y Sebastián con el anillo de compromiso" loading="lazy">
+  <div class="love-title"><span class="scr" aria-hidden="true" style="--src:url(assets/script/juntos.svg);--ar:5.887/1.39;--sw:5.887;--h:1.39"></span><span class="sr">Juntos, para siempre</span></div>
+  <div class="tear bottom" aria-hidden="true"></div>
+</section>
 
-<!-- ================= VESTIMENTA ================= -->
 <section id="vestimenta">
   <img class="deco" src="assets/calla.png" alt="" style="top:16px;right:max(-24px,calc(50% - 470px));width:100px">
   <div class="wrap center">
@@ -497,7 +511,6 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
     <div class="gallery" id="gallery" tabindex="0" aria-label="Galería de fotos, desliza para ver más">
       <figure style="--bg:url(fotos/g8-sm.jpg)"><button type="button"><img src="fotos/g8-sm.jpg" srcset="fotos/g8-sm.jpg 1000w, fotos/g8.jpg 2000w" sizes="(max-width: 1040px) 100vw, 1000px" data-full="fotos/g8.jpg" alt="Sebastián abrazando a Pamela por detrás" loading="lazy"></button></figure>
       <figure style="--bg:url(fotos/g6-sm.jpg)"><button type="button"><img src="fotos/g6-sm.jpg" srcset="fotos/g6-sm.jpg 1000w, fotos/g6.jpg 2000w" sizes="(max-width: 1040px) 100vw, 1000px" data-full="fotos/g6.jpg" alt="Pamela y Sebastián frente a frente en el bosque" loading="lazy"></button></figure>
-      <figure style="--bg:url(fotos/g2-sm.jpg)"><button type="button"><img src="fotos/g2-sm.jpg" srcset="fotos/g2-sm.jpg 1000w, fotos/g2.jpg 2000w" sizes="(max-width: 1040px) 100vw, 1000px" data-full="fotos/g2.jpg" alt="Las manos de Pamela y Sebastián con el anillo de compromiso" loading="lazy"></button></figure>
       <figure style="--bg:url(fotos/g1-sm.jpg)"><button type="button"><img src="fotos/g1-sm.jpg" srcset="fotos/g1-sm.jpg 1000w, fotos/g1.jpg 2000w" sizes="(max-width: 1040px) 100vw, 1000px" data-full="fotos/g1.jpg" alt="Sebastián y Pamela frente a frente, en blanco y negro" loading="lazy"></button></figure>
       <figure style="--bg:url(fotos/g5-sm.jpg)"><button type="button"><img src="fotos/g5-sm.jpg" srcset="fotos/g5-sm.jpg 1000w, fotos/g5.jpg 2000w" sizes="(max-width: 1040px) 100vw, 1000px" data-full="fotos/g5.jpg" alt="Pamela y Sebastián caminando en un campo" loading="lazy"></button></figure>
       <figure style="--bg:url(fotos/g7-sm.jpg)"><button type="button"><img src="fotos/g7-sm.jpg" srcset="fotos/g7-sm.jpg 1000w, fotos/g7.jpg 2000w" sizes="(max-width: 1040px) 100vw, 1000px" data-full="fotos/g7.jpg" alt="Sebastián cargando a Pamela en un campo" loading="lazy"></button></figure>
