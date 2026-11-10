@@ -291,11 +291,13 @@ a.gift-row:hover .nm{color:var(--blush)}
 form{display:grid;gap:22px}
 fieldset{border:0;margin:0;padding:0;min-width:0}
 legend,.lbl{font-family:var(--f-display);font-weight:600;font-size:14px;letter-spacing:.2em;text-transform:uppercase;color:var(--olive);margin-bottom:10px;display:block;padding:0}
-.choice{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.choice{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .choice input{position:absolute;opacity:0;pointer-events:none}
-.choice label{display:block;text-align:center;border:1.5px solid var(--line);border-radius:16px;padding:16px 10px;cursor:pointer;background:var(--paper);transition:border-color .2s,background .2s}
+.choice label{display:block;min-width:0;text-align:center;border:1.5px solid var(--line);border-radius:16px;padding:16px 10px;cursor:pointer;background:var(--paper);transition:border-color .2s,background .2s}
 .choice label b{display:block;font-family:var(--f-script);font-weight:400;font-size:30px;line-height:1.15;color:var(--wine)}
 .choice label > span{font-size:15px;color:var(--muted)}
+.choice label b{padding:0 2px}
+@media (max-width:480px){.choice label{padding:14px 8px}.choice label b{font-size:24px}}
 .choice input:checked+label{border-color:var(--wine);background:var(--tint)}
 .choice input:focus-visible+label{outline:2px solid var(--wine);outline-offset:2px}
 .stepper{display:flex;align-items:center;gap:14px}
