@@ -149,6 +149,20 @@ input:focus,select:focus{outline:none;border-color:var(--wine)}
   -webkit-mask:var(--src) center/contain no-repeat;mask:var(--src) center/contain no-repeat}
 .sr{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 h2 .scr{margin-block:-.18em -.32em}
+
+.media-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-top:6px}
+.tile{position:relative;display:block;aspect-ratio:1;border-radius:12px;overflow:hidden;background:var(--line-2);text-decoration:none;color:var(--ink)}
+.tile img{position:absolute;inset:0;z-index:1;width:100%;height:100%;max-width:none;object-fit:cover;display:block}
+.tile .who,.tile .vid{z-index:2}
+.tile .ph{position:absolute;inset:0;display:grid;place-items:center;align-content:center;gap:4px;padding:8px;text-align:center;font-size:12px;color:var(--muted)}
+.tile .ph svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.6}
+.tile .who{position:absolute;left:0;right:0;bottom:0;padding:16px 8px 6px;font-size:12px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.6));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile .vid{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.55);color:#fff;border-radius:999px;font-size:11px;padding:2px 8px}
+#mediaMore{margin-top:12px}
+@media (max-width:380px){header .bar{gap:7px}header .back,header button{padding:5px 9px;font-size:12.5px}header .home img{height:24px}}
+@media (max-width:340px){header h1{display:none}}
+#vPanel > *,.split > *{min-width:0}
 </style>
 </head>
 <body>
@@ -159,7 +173,7 @@ h2 .scr{margin-block:-.18em -.32em}
     <span class="sp"></span>
     <span class="stamp" id="stamp"></span>
     <a href="./" class="back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Invitación</a>
-    <button type="button" id="refresh" hidden>Actualizar</button>
+    <button type="button" id="refresh" hidden aria-label="Actualizar"><span class="long">Actualizar</span><span class="short" aria-hidden="true">↻</span></button>
     <button type="button" id="logout" hidden>Salir</button>
   </div>
 </header>
@@ -223,6 +237,15 @@ h2 .scr{margin-block:-.18em -.32em}
     <section class="card" aria-labelledby="hMsg">
       <h2 id="hMsg">Mensajes para ustedes</h2>
       <div class="msgs" id="msgs"></div>
+    </section>
+    <section class="card" aria-labelledby="hMedia">
+      <div class="media-head">
+        <h2 id="hMedia">Fotos y videos de los invitados</h2>
+        <a class="act" id="mediaFolder" href="#" target="_blank" rel="noopener" hidden>Abrir carpeta en Drive</a>
+      </div>
+      <p class="count-line" id="mediaCount">Cargando…</p>
+      <div class="media" id="media"></div>
+      <button type="button" class="act" id="mediaMore" hidden>Ver más</button>
     </section>
   </div>
 </main>
@@ -289,7 +312,7 @@ async function cargar(silencioso){
     guests = r.guests;
     $("stamp").textContent = "Actualizado " + new Date(r.actualizado || Date.now()).toLocaleTimeString("es-MX", { hour:"numeric", minute:"2-digit" });
     $("refresh").hidden = false; $("logout").hidden = false;
-    llenarFiltros(); render(); show("vPanel");
+    llenarFiltros(); render(); show("vPanel"); cargarMedia();
   }catch(e){
     show("vLogin"); $("loginErr").hidden = false; $("loginErr").textContent = "No hay conexión con la hoja. Inténtalo de nuevo.";
   }
@@ -459,6 +482,50 @@ async function copiar(texto, ok){
     ta.remove(); toast(done ? ok : "No se pudo copiar automáticamente");
   }
 }
+
+/* ---------- Fotos y videos de los invitados ---------- */
+let media = [], mediaShown = 0;
+const MEDIA_PAGE = 60;
+async function cargarMedia(){
+  $("mediaCount").textContent = "Cargando…";
+  try{
+    let r;
+    if (demo){
+      const fotos = ["g1","g3","g5","g6","g7","g8","g9","principal"];
+      const quien = ["Tía Lupita","Fam. Salas Torres","Fernando Contreras","","Ana Ramírez","Edwin Aragonez"];
+      r = { ok:true, folderUrl:"https://drive.google.com/", files: fotos.concat(fotos).map((f,i) => ({ id:"demo"+i, demoThumb:"fotos/"+f+"-sm.jpg",
+        name:f+".jpg", mime: i % 5 === 3 ? "video/mp4" : "image/jpeg", size: (i % 5 === 3 ? 90 : 0.8) * 1048576, created:new Date(Date.now() - i * 600000).toISOString(), who: quien[i % quien.length] })) };
+    } else r = await post({ action:"media", password: pw });
+    if (!r.ok) throw 0;
+    media = r.files || []; mediaShown = 0; $("media").innerHTML = "";
+    if (r.folderUrl){ $("mediaFolder").href = r.folderUrl; $("mediaFolder").hidden = false; }
+    const vids = media.filter(f => f.mime.startsWith("video/")).length, gb = media.reduce((a,f) => a + f.size, 0) / 1073741824;
+    $("mediaCount").textContent = media.length
+      ? (media.length - vids) + (media.length - vids === 1 ? " foto" : " fotos") + " · " + vids + (vids === 1 ? " video" : " videos") + " · " + (gb < 1 ? Math.round(gb * 1024) + " MB" : gb.toFixed(1) + " GB")
+      : "Todavía no hay fotos. Aquí aparecerán las que suban los invitados desde pambaswedding.com/comparte.";
+    masMedia();
+  }catch(e){ $("mediaCount").textContent = "No se pudieron cargar las fotos."; }
+}
+function masMedia(){
+  const box = $("media");
+  media.slice(mediaShown, mediaShown + MEDIA_PAGE).forEach(f => {
+    const a = document.createElement("a"); a.className = "tile"; a.target = "_blank"; a.rel = "noopener";
+    a.href = f.demoThumb ? f.demoThumb : "https://drive.google.com/file/d/" + f.id + "/view";
+    const isV = f.mime.startsWith("video/");
+    const ph = '<span class="ph"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 16l5-5 4 4 3-3 6 6"/></svg><span></span></span>';
+    a.innerHTML = ph;
+    a.querySelector(".ph span").textContent = isV ? "Video" : "Foto";
+    const img = document.createElement("img"); img.loading = "lazy"; img.alt = (isV ? "Video" : "Foto") + (f.who ? " de " + f.who : "");
+    img.src = f.demoThumb || ("https://drive.google.com/thumbnail?id=" + f.id + "&sz=w400");
+    img.onerror = () => img.remove(); a.appendChild(img);
+    if (isV) a.insertAdjacentHTML("beforeend", '<span class="vid">▶ video</span>');
+    if (f.who){ const w = document.createElement("span"); w.className = "who"; w.textContent = f.who; a.appendChild(w); }
+    box.appendChild(a);
+  });
+  mediaShown = Math.min(media.length, mediaShown + MEDIA_PAGE);
+  $("mediaMore").hidden = mediaShown >= media.length;
+}
+$("mediaMore").onclick = masMedia;
 
 /* ---------- Eventos ---------- */
 $("loginForm").addEventListener("submit", e => {

@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#8B263E">
+<title>Comparte tus fotos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libertinus+Sans:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Layout: una sola columna para celular: título manuscrito, tarjeta para elegir archivos y la lista de lo que se va subiendo. Misma identidad que la invitación. */
+:root{
+  --paper:#F7F2E8; --card:#FBF8F1; --ink:#3B2A22; --muted:#7A6A5E; --line:#E3D6C3;
+  --wine:#8B263E; --wine-deep:#6E1C30; --olive:#786825; --olive-deep:#292800; --blush:#E0AEBA; --tint:#F6E7E8;
+  --ok:#5F6B22;
+  --f:"Libertinus Sans","Gill Sans","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{background:var(--paper);color:var(--ink);font-family:var(--f);font-size:17px;line-height:1.55}
+img{max-width:100%;display:block}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--wine);outline-offset:3px;border-radius:6px}
+
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--wine);z-index:20}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--wine);color:var(--paper)}
+header .bar{max-width:880px;margin:0 auto;height:60px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header img{height:30px;width:auto}
+header a.back{display:inline-flex;align-items:center;gap:4px;color:var(--paper);text-decoration:none;border:1px solid rgba(247,242,232,.45);border-radius:999px;padding:6px 14px 6px 10px;font-size:14px}
+header a.back svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+header :focus-visible{outline-color:var(--paper)}
+
+main{max-width:620px;margin:0 auto;padding-block:36px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.scr{display:inline-block;width:calc(var(--sw) * 1.15em);max-width:100%;aspect-ratio:var(--ar);background:currentColor;-webkit-mask:var(--src) center/contain no-repeat;mask:var(--src) center/contain no-repeat;vertical-align:middle}
+.sr{position:absolute!important;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+h1{margin:0;text-align:center;color:var(--wine);font-size:clamp(46px,12vw,64px);line-height:1}
+.lede{text-align:center;color:var(--muted);margin:14px auto 0;max-width:30em;text-wrap:balance}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:clamp(20px,5vw,32px);margin-top:28px;box-shadow:0 24px 50px -40px rgba(139,38,62,.4)}
+.lbl{display:block;font-weight:700;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--olive);margin-bottom:8px}
+.lbl small{font-weight:400;letter-spacing:0;text-transform:none;font-size:14px;color:var(--muted)}
+input[type=text]{width:100%;background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;font-size:17px}
+input[type=text]:focus{outline:none;border-color:var(--wine)}
+
+.pick{margin-top:20px;position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:30px 18px;border:2px dashed var(--blush);border-radius:18px;background:var(--tint);cursor:pointer;transition:border-color .2s,background .2s}
+.pick:hover,.pick.drag{border-color:var(--wine);background:#F3DFE2}
+.pick input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+.pick .ic{width:58px;height:58px;border-radius:50%;background:var(--wine);color:var(--paper);display:grid;place-items:center}
+.pick .ic svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.pick b{font-size:20px;color:var(--wine)}
+.pick span{font-size:15px;color:var(--muted)}
+.pick:focus-within{outline:2px solid var(--wine);outline-offset:3px}
+
+.summary{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:26px 0 8px;font-size:15px;color:var(--muted)}
+.summary b{color:var(--ink)}
+.list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.item{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 12px 8px 8px}
+.thumb{width:56px;height:56px;border-radius:10px;background:var(--line) center/cover no-repeat;position:relative;overflow:hidden}
+.thumb video{width:100%;height:100%;object-fit:cover}
+.thumb .play{position:absolute;inset:0;display:grid;place-items:center;color:#fff}
+.thumb .play svg{width:20px;height:20px;fill:currentColor;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}
+.meta{min-width:0}
+.name{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar{height:5px;border-radius:3px;background:var(--line);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;width:0;background:var(--wine);transition:width .25s}
+.st{font-size:13px;color:var(--muted);margin-top:4px;font-variant-numeric:tabular-nums}
+.item.done .bar i{background:var(--ok)}
+.item.err .bar i{background:#B4495E}
+.item.err .st{color:#9C2E44}
+.badge{font-size:13px;font-weight:700;white-space:nowrap}
+.badge.ok{color:var(--ok)}
+.retry{background:none;border:1.5px solid var(--wine);color:var(--wine);border-radius:999px;padding:4px 12px;font-size:13px;font-weight:700;cursor:pointer}
+
+.thanks{text-align:center;margin-top:22px;color:var(--wine)}
+.thanks .scr{font-size:40px}
+.thanks p{margin:4px 0 0;color:var(--muted)}
+.note{margin-top:26px;text-align:center;font-size:15px;color:var(--muted);text-wrap:balance}
+.closed{text-align:center}
+.closed p{color:var(--muted)}
+.closed a{color:var(--wine)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <a href="./" aria-label="Ir a la invitación"><img src="assets/ps-light.svg" alt="Pamela &amp; Sebastián"></a>
+    <a class="back" href="./"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Invitación</a>
+  </div>
+</header>
+
+<main>
+  <h1><span class="scr" aria-hidden="true" style="--src:url(assets/script/comparte.svg);--ar:5.128/1.39;--sw:5.128"></span><span class="sr">Comparte tus fotos</span></h1>
+  <p class="lede">Sube aquí las fotos y videos que tomes en la boda. Nos encantará ver nuestro día a través de sus ojos.</p>
+
+  <!-- Antes de la boda -->
+  <section class="card closed" id="vSoon" hidden>
+    <p>Esta página se abre el día de la boda, el <b>19 de junio de 2027</b>. ¡Aquí podrán subir sus fotos y videos!</p>
+    <p><a href="./">Ver la invitación</a></p>
+  </section>
+
+  <!-- Después de cerrar -->
+  <section class="card closed" id="vClosed" hidden>
+    <p>Ya cerramos la recepción de fotos. ¡Gracias a todos por compartir sus recuerdos con nosotros!</p>
+  </section>
+
+  <!-- Abierta -->
+  <section class="card" id="vOpen" hidden>
+    <label class="lbl" for="who">Tu nombre <small>(opcional)</small></label>
+    <input type="text" id="who" autocomplete="name" placeholder="Para saber de quién son las fotos">
+
+    <label class="pick" id="pick">
+      <input type="file" id="files" accept="image/*,video/*" multiple aria-label="Elegir fotos o videos">
+      <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h2l1.5-2h6l1.5 2h2A2.5 2.5 0 0 1 21 8.5v9a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/><circle cx="12" cy="13" r="3.6"/></svg></span>
+      <b>Elegir fotos o videos</b>
+      <span>Puedes elegir varios a la vez · videos de hasta 3 minutos</span>
+    </label>
+
+    <div class="summary" id="summary" hidden><span id="sumText"></span></div>
+    <ul class="list" id="list" aria-live="polite"></ul>
+
+    <div class="thanks" id="thanks" hidden>
+      <span class="scr" aria-hidden="true" style="--src:url(assets/script/gracias.svg);--ar:3.023/1.39;--sw:3.023"></span><span class="sr">¡Gracias!</span>
+      <p>Ya recibimos tus archivos. Puedes subir más cuando quieras.</p>
+    </div>
+  </section>
+
+  <p class="note" id="note" hidden>¿Tienes videos largos o muchos archivos? Súbelos con calma cuando estés en tu wifi: esta página estará abierta hasta el <b id="untilTxt"></b>. Mantén esta pantalla abierta mientras se suben.</p>
+</main>
+
+<script>
+/* ===================== CONFIGURACIÓN ===================== */
+const CONFIG = {
+  endpoint: "https://script.google.com/macros/s/AKfycbxd668ZP_15JSAQSRdqkPZocpVBDUWvEwyuY35TcC2AV6ygVmzssFXufo5KQsAcWz69/exec",
+  openFrom:  "2027-06-19T00:00:00-06:00",         // desde cuándo se puede subir
+  openUntil: "2027-07-19T23:59:59-06:00",         // hasta cuándo
+  untilText: "19 de julio",
+  maxVideoMB: 600,                                // tope de tamaño por video
+  maxVideoSec: 180,                               // tope de duración por video (3 min)
+  photoMaxPx: 2400,                               // las fotos se reducen a este tamaño antes de subir
+  chunkMB: 8,                                     // tamaño de cada pedazo al subir videos
+};
+/* ========================================================= */
+const $ = id => document.getElementById(id);
+const demo = !CONFIG.endpoint;
+
+/* ---------- ¿Está abierta la página? ---------- */
+(function(){
+  const now = Date.now(), from = new Date(CONFIG.openFrom).getTime(), until = new Date(CONFIG.openUntil).getTime();
+  const prueba = location.hash === "#prueba";   // pambaswedding.com/comparte#prueba abre la página antes de la boda para probar
+  const state = demo || prueba ? "open" : now < from ? "soon" : now > until ? "closed" : "open";
+  $("vSoon").hidden = state !== "soon"; $("vClosed").hidden = state !== "closed"; $("vOpen").hidden = state !== "open";
+  $("note").hidden = state !== "open"; $("untilTxt").textContent = CONFIG.untilText;
+})();
+
+/* ---------- Nombre recordado en este teléfono ---------- */
+try{ $("who").value = localStorage.getItem("fotos_nombre") || ""; }catch(e){}
+$("who").addEventListener("change", () => { try{ localStorage.setItem("fotos_nombre", $("who").value.trim()); }catch(e){} });
+
+/* ---------- Cola de subidas ---------- */
+const queue = []; let running = 0; const PARALLEL = 2;
+const fmtMB = b => (b / 1048576).toFixed(b < 10485760 ? 1 : 0) + " MB";
+
+$("files").addEventListener("change", e => { addFiles([...e.target.files]); e.target.value = ""; });
+const pick = $("pick");
+["dragenter","dragover"].forEach(ev => pick.addEventListener(ev, e => { e.preventDefault(); pick.classList.add("drag"); }));
+["dragleave","drop"].forEach(ev => pick.addEventListener(ev, e => { e.preventDefault(); pick.classList.remove("drag"); }));
+pick.addEventListener("drop", e => addFiles([...e.dataTransfer.files]));
+
+function addFiles(files){
+  files.filter(f => /^(image|video)\//.test(f.type) || /\.(heic|heif|mov|mp4|jpg|jpeg|png)$/i.test(f.name)).forEach(f => {
+    const it = { file:f, isVideo: f.type.startsWith("video/") || /\.(mov|mp4)$/i.test(f.name), progress:0, state:"wait", el:null };
+    it.el = renderItem(it); $("list").prepend(it.el); queue.push(it);
+  });
+  $("thanks").hidden = true; updateSummary(); pump();
+}
+
+function renderItem(it){
+  const li = document.createElement("li"); li.className = "item";
+  li.innerHTML = '<div class="thumb"></div><div class="meta"><div class="name"></div><div class="bar"><i></i></div><div class="st"></div></div><div class="act"></div>';
+  li.querySelector(".name").textContent = it.file.name;
+  const th = li.querySelector(".thumb"), url = URL.createObjectURL(it.file);
+  if (it.isVideo){
+    const v = document.createElement("video"); v.src = url; v.muted = true; v.playsInline = true; v.preload = "metadata";
+    v.addEventListener("loadeddata", () => { try{ v.currentTime = 0.1; }catch(e){} });
+    th.appendChild(v); th.insertAdjacentHTML("beforeend", '<span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>');
+  } else th.style.backgroundImage = "url('" + url + "')";
+  return li;
+}
+function setItem(it, pct, text, state){
+  if (pct != null){ it.progress = pct; it.el.querySelector(".bar i").style.width = Math.round(pct * 100) + "%"; }
+  if (text != null) it.el.querySelector(".st").textContent = text;
+  if (state){ it.state = state; it.el.classList.toggle("done", state === "done"); it.el.classList.toggle("err", state === "err");
+    const act = it.el.querySelector(".act"); act.innerHTML = "";
+    if (state === "done") act.innerHTML = '<span class="badge ok">✓ Listo</span>';
+    if (state === "err" && it.retry){ const b = document.createElement("button"); b.className = "retry"; b.type = "button"; b.textContent = "Reintentar";
+      b.onclick = () => { setItem(it, 0, "En espera…", "wait"); queue.push(it); pump(); }; act.appendChild(b); }
+  }
+  updateSummary();
+}
+function updateSummary(){
+  const all = [...document.querySelectorAll(".item")]; if (!all.length){ $("summary").hidden = true; return; }
+  const done = all.filter(x => x.classList.contains("done")).length, err = all.filter(x => x.classList.contains("err")).length;
+  $("summary").hidden = false;
+  $("sumText").innerHTML = "<b>" + done + " de " + all.length + "</b> subidos" + (err ? " · " + err + " con error" : "");
+  $("thanks").hidden = !(done && done + err === all.length && !err);
+}
+
+function pump(){
+  while (running < PARALLEL && queue.length){
+    const it = queue.shift(); running++;
+    upload(it).catch(err => { it.retry = err.retry !== false; setItem(it, null, err.message || "No se pudo subir. Revisa tu conexión.", "err"); })
+      .finally(() => { running--; pump(); });
+  }
+}
+
+async function upload(it){
+  setItem(it, 0, "Preparando…", "up");
+  if (it.isVideo){
+    if (it.file.size > CONFIG.maxVideoMB * 1048576) throw Object.assign(new Error("El video pesa " + fmtMB(it.file.size) + ". El máximo es " + CONFIG.maxVideoMB + " MB."), { retry:false });
+    const dur = await videoDuration(it.file);
+    if (dur && dur > CONFIG.maxVideoSec + 2) throw Object.assign(new Error("El video dura " + Math.round(dur / 60 * 10) / 10 + " min. El máximo es " + CONFIG.maxVideoSec / 60 + " minutos."), { retry:false });
+    return uploadResumable(it, it.file, it.file.name, it.file.type || "video/mp4");
+  }
+  const blob = await shrinkPhoto(it.file).catch(() => null);
+  if (!blob) return uploadResumable(it, it.file, it.file.name, it.file.type || "image/jpeg"); // formato que el navegador no abre: se sube tal cual
+  return uploadResumable(it, blob, it.file.name.replace(/\.\w+$/, "") + ".jpg", "image/jpeg");
+}
+
+function videoDuration(file){
+  return new Promise(res => { const v = document.createElement("video"); v.preload = "metadata"; v.src = URL.createObjectURL(file);
+    v.onloadedmetadata = () => res(isFinite(v.duration) ? v.duration : 0); v.onerror = () => res(0); setTimeout(() => res(0), 4000); });
+}
+async function shrinkPhoto(file){
+  const bmp = await createImageBitmap(file, { imageOrientation:"from-image" });
+  const s = Math.min(1, CONFIG.photoMaxPx / Math.max(bmp.width, bmp.height));
+  const c = document.createElement("canvas"); c.width = Math.round(bmp.width * s); c.height = Math.round(bmp.height * s);
+  c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
+  return new Promise((res, rej) => c.toBlob(b => b ? res(b) : rej(), "image/jpeg", 0.88));
+}
+
+/* ---------- Subida por pedazos directo a Google Drive ----------
+   1) Se pide al script una dirección de subida para este archivo.
+   2) El archivo se manda en pedazos; si la señal se corta, se reintenta el pedazo. */
+async function uploadResumable(it, blob, name, mime){
+  const total = blob.size;
+  if (demo) return simulate(it, total);
+  setItem(it, 0, "Conectando…");
+  const r = await fetch(CONFIG.endpoint, { method:"POST", body: JSON.stringify({ action:"startUpload", name, mime, size: total, who: $("who").value.trim() }) }).then(r => r.json());
+  if (!r.ok || !r.uploadUrl) throw new Error(r.error === "closed" ? "La recepción de fotos está cerrada." : "No se pudo iniciar la subida.");
+  const CH = CONFIG.chunkMB * 1048576; let start = 0;
+  while (start < total){
+    const end = Math.min(start + CH, total);
+    let tries = 0, resp;
+    for (;;){
+      try{
+        resp = await fetch(r.uploadUrl, { method:"PUT", headers:{ "Content-Range": "bytes " + start + "-" + (end - 1) + "/" + total }, body: blob.slice(start, end) });
+        if (resp.status === 308 || resp.ok) break;
+        throw new Error("http " + resp.status);
+      }catch(e){
+        if (++tries > 4) throw new Error("Se cortó la conexión. Toca Reintentar.");
+        setItem(it, null, "Reintentando…"); await new Promise(s => setTimeout(s, 1500 * tries));
+      }
+    }
+    if (resp.status === 308){ const rg = resp.headers.get("Range"); start = rg ? parseInt(rg.split("-")[1], 10) + 1 : end; } else start = total;
+    setItem(it, start / total, fmtMB(start) + " de " + fmtMB(total));
+  }
+  setItem(it, 1, fmtMB(total), "done");
+}
+
+/* Vista previa: simula la subida sin conexión. */
+function simulate(it, total){
+  return new Promise(res => {
+    let sent = 0; const speed = (it.isVideo ? 2.2 : 3.5) * 1048576 * (0.7 + Math.random() * 0.6);
+    const t = setInterval(() => { sent = Math.min(total, sent + speed / 4); setItem(it, sent / total, fmtMB(sent) + " de " + fmtMB(total));
+      if (sent >= total){ clearInterval(t); setItem(it, 1, fmtMB(total), "done"); res(); } }, 250);
+  });
+}
+</script>
+</body>
+</html>
