@@ -183,14 +183,15 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 
 /* ================= PROGRAMA ================= */
 .events{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:30px;margin-top:48px}
-.event{background:var(--card);border:1px solid var(--line);border-radius:200px 200px 18px 18px;padding:58px 26px 34px;text-align:center;position:relative}
-.event .sprig{position:absolute;top:-30px;left:50%;transform:translateX(-50%);height:72px;width:auto}
+.event{background:var(--card);border:2px solid var(--olive);border-radius:18px;padding:40px 26px 34px;text-align:center;display:flex;flex-direction:column;align-items:center}
+.event .btn{margin-top:auto}
+.event .place,.event .until{margin-bottom:22px!important}
+.event .place:has(+ .until){margin-bottom:0!important}
 .event .time{font-family:var(--f-display);font-size:44px;font-weight:500;color:var(--wine);line-height:1;font-variant-numeric:tabular-nums}
 .event .time small{font-size:18px;letter-spacing:.12em}
 .event h3{font-family:var(--f-display);font-weight:600;font-size:15px;letter-spacing:.22em;text-transform:uppercase;color:var(--olive);margin:18px 0 4px}
 .event .place{font-family:var(--f-display);font-size:28px;font-weight:500;line-height:1.2;margin:0;text-wrap:balance}
 .event .until{color:var(--muted);font-style:italic;margin:6px 0 0}
-.event .btn{margin-top:22px}
 
 /* ================= FOTO CON BORDES DE PAPEL RASGADO ================= */
 .love{position:relative;padding:0;overflow:visible;margin-block:8px}
@@ -392,8 +393,8 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
 <main>
 <!-- ================= PORTADA ================= -->
 <section class="hero" id="inicio">
-  <img class="deco hide-sm" src="assets/heart_tl.png" alt="" style="top:62%;left:calc(50% - 440px);width:90px">
-  <img class="deco hide-sm" src="assets/berry_r.png" alt="" style="top:74%;right:calc(50% - 450px);width:120px">
+  <img class="deco hide-sm" src="assets/heart_tl.png" alt="" style="bottom:190px;left:0;width:90px">
+  <img class="deco hide-sm" src="assets/berry_r.png" alt="" style="bottom:70px;right:0;width:120px">
   <div class="hero-photo">
     <div class="photo-frame">
       <img src="fotos/principal-sm.jpg" srcset="fotos/principal-sm.jpg 1280w, fotos/principal.jpg 2560w" sizes="100vw" alt="Pamela y Sebastián abrazados en un camino entre árboles" fetchpriority="high">
@@ -439,26 +440,24 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
 
 <!-- ================= PROGRAMA ================= -->
 <section id="programa">
-  <img class="deco" src="assets/pink_l.png" alt="" style="top:20px;left:max(-50px,calc(50% - 480px));width:130px">
-  <img class="deco hide-sm" src="assets/hearts_br.png" alt="" style="bottom:30px;right:calc(50% - 480px);width:150px">
+  <img class="deco" src="assets/pink_l.png" alt="" style="top:20px;left:0;width:min(130px,28vw)">
+  <img class="deco" src="assets/hearts_br.png" alt="" style="bottom:30px;right:0;width:min(150px,30vw)">
   <div class="wrap center">
     <p class="eyebrow">El gran día</p>
     <h2><span class="scr" aria-hidden="true" style="--src:url(assets/script/programa.svg);--ar:3.1/1.39;--sw:3.1;--h:1.39"></span><span class="sr">Programa</span></h2>
     <div class="events">
       <article class="event">
-        <img class="sprig" src="assets/berry_r.png" alt="">
         <div class="time">4:00 <small>p.m.</small></div>
         <h3>Ceremonia religiosa</h3>
         <p class="place">Parroquia Todos los Santos</p>
-        <a class="btn ghost sm" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Parroquia+Todos+los+Santos">Abrir en Google Maps</a>
+        <a class="btn ghost sm" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Parroquia+Todos+los+Santos">Mapa</a>
       </article>
       <article class="event">
-        <img class="sprig" src="assets/heart_tl.png" alt="">
         <div class="time">8:30 <small>p.m.</small></div>
         <h3>Recepción</h3>
         <p class="place">Hacienda Los Monroy</p>
         <p class="until">hasta la 1:30 a.m.</p>
-        <a class="btn ghost sm" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Hacienda+Los+Monroy">Abrir en Google Maps</a>
+        <a class="btn ghost sm" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Hacienda+Los+Monroy">Mapa</a>
       </article>
     </div>
   </div>
@@ -575,7 +574,7 @@ footer p{font-family:var(--f-display);letter-spacing:.24em;text-transform:upperc
 
 <!-- ================= CONFIRMAR ================= -->
 <section id="confirmar">
-  <img class="deco" src="assets/top_cluster.png" alt="" style="top:10px;left:max(-70px,calc(50% - 510px));width:190px;transform:rotate(-20deg)">
+  <img class="deco" src="assets/top_cluster.png" alt="" style="top:10px;left:0;width:min(190px,40vw);transform:rotate(-20deg);transform-origin:bottom left">
   <div class="wrap center">
     <p class="eyebrow">R.S.V.P.</p>
     <h2><span class="scr" aria-hidden="true" style="--src:url(assets/script/confirma.svg);--ar:6.211/1.39;--sw:6.211;--h:1.39"></span><span class="sr">Confirma tu asistencia</span></h2>
