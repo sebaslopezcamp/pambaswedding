@@ -64,6 +64,7 @@ h2{font-family:var(--f-display);font-weight:600;font-size:26px;margin:0;line-hei
 .login .script{font-family:var(--f-script);font-size:48px;color:var(--wine);margin:6px 0 0;line-height:1.1}
 .login form{display:grid;gap:12px;margin-top:20px}
 .login p{color:var(--muted);margin:6px 0 0}
+@media (max-width:600px){.login{margin-top:4px;padding:18px}.login img{width:52px!important}.login .script{font-size:32px}.login form{margin-top:14px}}
 input[type=password]{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;letter-spacing:.12em}
 input[type=password]::placeholder{letter-spacing:0}
 input[type=password],input[type=search],select{width:100%;background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;font-size:16px}
@@ -528,6 +529,12 @@ function masMedia(){
 $("mediaMore").onclick = masMedia;
 
 /* ---------- Eventos ---------- */
+/* En celular, que el teclado no tape el campo de la contraseña */
+$("pw").addEventListener("focus", () => {
+  const go = () => $("pw").scrollIntoView({ block:"center", behavior:"smooth" });
+  setTimeout(go, 350);
+  if (window.visualViewport) visualViewport.addEventListener("resize", go, { once:true });
+});
 $("loginForm").addEventListener("submit", e => {
   e.preventDefault(); pw = $("pw").value; if (!pw) return;
   $("loginErr").hidden = true; ssSet("pw", pw); cargar();
