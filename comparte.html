@@ -69,11 +69,11 @@ input[type=text]:focus{outline:none;border-color:var(--wine)}
 .thumb .play svg{width:20px;height:20px;fill:currentColor;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}
 .meta{min-width:0}
 .name{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bar{height:5px;border-radius:3px;background:var(--line);overflow:hidden;margin-top:6px}
-.bar i{display:block;height:100%;width:0;background:var(--wine);transition:width .25s}
+.prog{height:5px;border-radius:3px;background:var(--line);overflow:hidden;margin-top:6px}
+.prog i{display:block;height:100%;width:0;background:var(--wine);transition:width .25s}
 .st{font-size:13px;color:var(--muted);margin-top:4px;font-variant-numeric:tabular-nums}
-.item.done .bar i{background:var(--ok)}
-.item.err .bar i{background:#B4495E}
+.item.done .prog i{background:var(--ok)}
+.item.err .prog i{background:#B4495E}
 .item.err .st{color:#9C2E44}
 .badge{font-size:13px;font-weight:700;white-space:nowrap}
 .badge.ok{color:var(--ok)}
@@ -185,7 +185,7 @@ function addFiles(files){
 
 function renderItem(it){
   const li = document.createElement("li"); li.className = "item";
-  li.innerHTML = '<div class="thumb"></div><div class="meta"><div class="name"></div><div class="bar"><i></i></div><div class="st"></div></div><div class="act"></div>';
+  li.innerHTML = '<div class="thumb"></div><div class="meta"><div class="name"></div><div class="prog"><i></i></div><div class="st"></div></div><div class="act"></div>';
   li.querySelector(".name").textContent = it.file.name;
   const th = li.querySelector(".thumb"), url = URL.createObjectURL(it.file);
   if (it.isVideo){
@@ -196,7 +196,7 @@ function renderItem(it){
   return li;
 }
 function setItem(it, pct, text, state){
-  if (pct != null){ it.progress = pct; it.el.querySelector(".bar i").style.width = Math.round(pct * 100) + "%"; }
+  if (pct != null){ it.progress = pct; it.el.querySelector(".prog i").style.width = Math.round(pct * 100) + "%"; }
   if (text != null) it.el.querySelector(".st").textContent = text;
   if (state){ it.state = state; it.el.classList.toggle("done", state === "done"); it.el.classList.toggle("err", state === "err");
     const act = it.el.querySelector(".act"); act.innerHTML = "";
